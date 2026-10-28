@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { notInArray } from "drizzle-orm";
-import { chapters, db, vocab } from "../src/db";
+import { chapters, db, sqlite, vocab } from "../src/db";
 import { parseFrontmatter, parseVocab } from "../src/lib/blocks";
 
 const dir = path.join(process.cwd(), "content", "book");
@@ -35,3 +35,6 @@ if (seen.size) db.delete(vocab).where(notInArray(vocab.id, [...seen])).run();
 db.delete(chapters).where(notInArray(chapters.id, files.map((f) => f.replace(/\.md$/, "")))).run();
 
 console.log(`Seeded ${files.length} chapter(s), ${nWords} word(s).`);
+
+// Fold the write-ahead log into the main file so the database can be copied as one file.
+sqlite.pragma("wal_checkpoint(TRUNCATE)");
