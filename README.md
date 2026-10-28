@@ -6,6 +6,13 @@ Built with Next.js, Tailwind CSS and SQLite. Everything runs locally; your progr
 
 > Not affiliated with the Goethe-Institut. The mock exams follow the published format and scoring of *Start Deutsch 1* but are original material.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![The cover and contents page](docs/screenshots/cover.jpg)<br>**Cover and contents** | ![A self-marking worksheet with red-pencil corrections](docs/screenshots/worksheet.jpg)<br>**Worksheets marked in red pencil, with explanations** |
+| ![Goethe A1 mock exam in exam mode with a countdown timer](docs/screenshots/exam-mode.jpg)<br>**Timed Goethe A1 mock exam (Lesen)** | ![The AI tutor answering a grammar question with a table](docs/screenshots/tutor.jpg)<br>**AI tutor, answering from the current chapter** |
+
 ## Features
 
 - **The book.** 13 chapters (about 49,000 words) from the alphabet and greetings to the perfect tense, grouped in seven parts. Every German sentence has a play button (normal and slow); the English translation can be switched off. Callouts mark rules (*Merke*), common mistakes (*Achtung*), tips (*Tipp*), English interference (*Englisch*) and culture (*Landeskunde*).
