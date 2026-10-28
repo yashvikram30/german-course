@@ -37,7 +37,7 @@ export function FocusMode() {
 
   if (!focus) return null;
   return (
-    <div className="no-print ui fixed right-4 top-4 z-40 flex items-center gap-3 rounded-sm border border-rule bg-paper/90 px-3 py-1.5 text-base shadow-sm backdrop-blur">
+    <div className="focus-pill no-print ui fixed right-4 top-4 z-40 flex items-center gap-3 rounded-sm border border-rule bg-paper/90 px-3 py-1.5 text-base shadow-sm backdrop-blur">
       <Elapsed />
       <button type="button" className="font-medium hover:text-blue" title="Esc or F" onClick={() => updateSettings({ focus: false })}>
         Exit focus

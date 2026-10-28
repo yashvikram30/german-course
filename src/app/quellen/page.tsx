@@ -10,6 +10,7 @@ export default function Quellen() {
       <ul>
         <li><a className={a} href="https://en.wikibooks.org/wiki/German">Wikibooks: German</a> (Creative Commons Attribution-ShareAlike). Grammar structure, explanations and many example sentences are adapted from its Grammar pages: personal pronouns, verb conjugation, word order, noun gender, plurals, the accusative and pronunciation. Adapted material in this book remains available under CC BY-SA.</li>
         <li><a className={a} href="https://coerll.utexas.edu/dib/">Deutsch im Blick</a>, University of Texas at Austin (Creative Commons Attribution 4.0). The vocabulary groupings and the introduction-style dialogues follow its first chapter.</li>
+        <li><a className={a} href="https://freesound.org/s/431871/">page turn sound effect</a> by stumpbutt on Freesound (Creative Commons 0). The page-turn sound in book view, trimmed and levelled.</li>
       </ul>
       <h2>Scope reference</h2>
       <ul>

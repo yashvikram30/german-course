@@ -9,9 +9,11 @@ export interface Settings {
   translations: boolean;
   size: number; // text scale
   focus: boolean; // distraction-free study mode
+  pages: boolean; // read chapters as book pages, one section per page
+  sound: boolean; // page-turn sound
 }
 
-const DEFAULTS: Settings = { voice: "", gender: "female", rate: 0.9, translations: true, size: 1, focus: false };
+const DEFAULTS: Settings = { voice: "", gender: "female", rate: 0.9, translations: true, size: 1, focus: false, pages: false, sound: true };
 const KEY = "german-book-settings";
 
 let cache: Settings = DEFAULTS;
