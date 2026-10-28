@@ -10,13 +10,21 @@ interface Saved extends Anchor {
 }
 type Ann = Anchor & { key: string; id?: number; note: string };
 
+// Maps a node inside `root` to the node at the same place in a deep clone of it.
+const pathOf = (node: Node, root: Node) => {
+  const path: number[] = [];
+  for (let n = node; n !== root && n.parentNode; n = n.parentNode) path.unshift(Array.prototype.indexOf.call(n.parentNode.childNodes, n));
+  return path;
+};
+const follow = (root: Node, path: number[]) => path.reduce<Node | undefined>((n, i) => n?.childNodes[i], root);
+
 // Selections that start or end in these belong to the worksheets, not to the text.
 const SKIP = "input, textarea, select, button, [contenteditable]";
 
-// Inline because the CSS pipeline drops ::highlight() rules from globals.css.
+// Kept next to the code that registers the highlights.
 const HIGHLIGHT_CSS = `
-::highlight(ann) { background-color: #ffe94a; color: #1c2330; }
-::highlight(ann-note) { background-color: #ffe94a; color: #1c2330; text-decoration: underline solid #e5484d 2px; }`;
+::highlight(ann) { background-color: var(--hl, #ffe94a); color: #1c2330; }
+::highlight(ann-note) { background-color: var(--hl, #ffe94a); color: #1c2330; text-decoration: underline solid #e5484d 2px; }`;
 
 /**
  * Select text with the pointer to highlight it; start typing straight away to add a note.
@@ -28,6 +36,7 @@ export function Annotator({ chapterId, initial, children }: { chapterId: string;
   const root = useRef<HTMLDivElement>(null);
   const area = useRef<HTMLTextAreaElement>(null);
   const ranges = useRef(new Map<string, Range>());
+  const clones = useRef<{ from: HTMLElement; to: HTMLElement }[]>([]); // the turning leaf is made of copies of sections
   const saving = useRef(new Map<string, Promise<number>>());
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const counter = useRef(0);
@@ -79,6 +88,20 @@ export function Annotator({ chapterId, initial, children }: { chapterId: string;
       if (!r) continue; // the book text changed and the quote is gone: keep it in the database, just don't show it
       ranges.current.set(a.key, r);
       (a.note.trim() ? noted : plain).add(r);
+    }
+    // While a page turns, the leaf is made of copies of sections: carry the highlights over so they do not vanish.
+    for (const cl of clones.current) {
+      if (!cl.to.isConnected) continue;
+      for (const [key, r] of ranges.current) {
+        if (!cl.from.contains(r.startContainer) || !cl.from.contains(r.endContainer)) continue;
+        const s = follow(cl.to, pathOf(r.startContainer, cl.from));
+        const e = follow(cl.to, pathOf(r.endContainer, cl.from));
+        if (!s || !e) continue;
+        const c = document.createRange();
+        c.setStart(s, r.startOffset);
+        c.setEnd(e, r.endOffset);
+        (annsRef.current.find((a) => a.key === key)?.note.trim() ? noted : plain).add(c);
+      }
     }
     CSS.highlights.set("ann", plain);
     CSS.highlights.set("ann-note", noted);
@@ -185,12 +208,20 @@ export function Annotator({ chapterId, initial, children }: { chapterId: string;
     document.addEventListener("pointerup", onUp);
     document.addEventListener("pointerdown", onDown);
     window.addEventListener("keydown", onKey, true);
+    window.addEventListener("annotator:close", close); // fired when a page is turned
+    const onClone = (e: Event) => {
+      clones.current = (e as CustomEvent<{ from: HTMLElement; to: HTMLElement }[] | null>).detail ?? [];
+      paint();
+    };
+    window.addEventListener("annotator:clone", onClone);
     return () => {
+      window.removeEventListener("annotator:close", close);
+      window.removeEventListener("annotator:clone", onClone);
       document.removeEventListener("pointerup", onUp);
       document.removeEventListener("pointerdown", onDown);
       window.removeEventListener("keydown", onKey, true);
     };
-  }, [chapterId, commit, place, close, flush]);
+  }, [chapterId, commit, place, close, flush, paint]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -209,7 +240,7 @@ export function Annotator({ chapterId, initial, children }: { chapterId: string;
   };
 
   return (
-    <div ref={wrap} className="relative">
+    <div ref={wrap} className="annot-wrap relative">
       <style>{HIGHLIGHT_CSS}</style>
       <div ref={root}>{children}</div>
       {open && current && (

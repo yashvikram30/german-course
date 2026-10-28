@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChapterActionsBottom } from "@/components/book/ChapterNav";
-import { ChapterBody, outlineOf } from "@/components/book/ChapterBody";
+import { ChapterBody, outlineOf, splitSections } from "@/components/book/ChapterBody";
+import { PageReader } from "@/components/book/PageReader";
 import { ChapterTracker } from "@/components/book/ChapterActions";
 import { Annotator } from "@/components/book/Annotator";
 import { getAnnotations, getChapter, getContents } from "@/lib/data";
@@ -12,12 +13,16 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
   if (!data) notFound();
   const { chapter, prev, next, exercises, read } = data;
   const outline = outlineOf(chapter.body);
+  const sections = splitSections(chapter.body);
+  const titles = [chapter.title, ...sections.map((s) => s.title), "End of chapter"];
   const words = getContents().find((c) => c.id === id)?.words ?? 0;
 
   return (
-    <div className="mx-auto flex max-w-5xl justify-center gap-12">
+    <div className="reader-wrap mx-auto flex max-w-5xl justify-center gap-12">
       <ChapterTracker id={id} />
-      <article className="min-w-0 max-w-[38rem] flex-1">
+      <article className="reader-col min-w-0 max-w-[38rem] flex-1">
+        <PageReader titles={titles} chapter={`${chapter.order}. ${chapter.title}`}>
+        <div data-page="0">
         <header className="mb-6">
           <p className="ui !my-0 text-lg text-muted"><span className="mr-2 rounded-sm bg-blue px-1.5 py-0.5 text-base font-bold text-paper">{chapter.level}</span>{chapter.part}</p>
           <h1 className="ui !mb-0 mt-5 text-[3.2rem] font-bold leading-[1.02] tracking-tight sm:text-[4.6rem]">
@@ -34,6 +39,7 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
             </ul>
           </div>
         </header>
+        </div>
 
         <Annotator chapterId={id} initial={getAnnotations(id)}>
           <ChapterBody
@@ -43,6 +49,7 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
           />
         </Annotator>
 
+        <div data-page={sections.length + 1}>
         <ChapterActionsBottom id={id} read={read !== null} words={words} prev={prev} next={next} />
 
         <p className="focus-hide ui mt-12 border-t border-rule pt-4 text-base text-muted">
@@ -51,9 +58,11 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
           <a className="underline" href="https://coerll.utexas.edu/dib/">Deutsch im Blick</a> (CC BY 4.0).{" "}
           <Link className="underline" href="/quellen">Sources and licences</Link>.
         </p>
+        </div>
+        </PageReader>
       </article>
 
-      <nav aria-label="On this page" className="focus-hide ui sticky top-20 hidden h-fit w-56 shrink-0 text-base xl:block">
+      <nav aria-label="On this page" className="focus-hide pages-hide ui sticky top-20 hidden h-fit w-56 shrink-0 text-base xl:block">
         <p className="label !my-0">On this page</p>
         <ol className="mt-3 space-y-2 border-l-2 border-rule pl-3">
           {outline.map((o) => (

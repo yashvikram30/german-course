@@ -188,3 +188,126 @@ body {
 @keyframes stamp-in { from { opacity: 0; transform: rotate(-3deg) scale(0.92); } to { opacity: 1; transform: rotate(-3deg) scale(1); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
+
+/* ---------- Page mode: an open book — Sections are laid out as pages; long ones continue on the next (see PageReader, pageLeaf) ---------- */
+/* Muted warm paper, whatever the system theme says: low contrast against the desk and no pure white, to spare the eyes. */
+html[data-pages] {
+  color-scheme: light;
+  --paper: #e2d4af; --paper-2: #d8c8a0; --sheet: #f0e6ca; --ink: #3a3125; --muted: #756850; --rule: #cbb98c; --grid: #e4d8b4;
+  --blue: #2c3d82; --red: #a8352c; --marker: #efd765; --good: #3f7b57; --der: #2f5fb0; --die: #b5456f; --das: #3f7b57;
+  --shadow: rgba(70, 48, 14, 0.28); --cover: #2c3d82; --on-cover: #f6efd9; --hl: #efd663;
+  --age: linear-gradient(180deg, transparent 55%, color-mix(in srgb, #a8761c 6%, transparent));
+  --face-r: linear-gradient(90deg, color-mix(in srgb, var(--ink) 12%, transparent), transparent 3rem), var(--age), var(--sheet); /* gutter shadow at the spine, a little ageing */
+  --face-l: linear-gradient(270deg, color-mix(in srgb, var(--ink) 12%, transparent), transparent 3rem), var(--age), var(--sheet);
+}
+html[data-pages] .reader-wrap { max-width: 74rem; }
+html[data-pages] .reader-col { max-width: 47rem; }
+html[data-pages][data-spread] .reader-col { max-width: 72rem; }
+html[data-pages] .pages-hide { display: none !important; }
+html[data-pages] .focus-pill { display: none; } /* book view is always in focus mode: no timer in the corner */
+
+html[data-pages] .page-stage {
+  --pw: 100cqw; --pl: 3rem; --pr: 2.4rem; /* one page, and its left and right margins */
+  --stack: 10px; --board: 7px; /* the thickest a stack of page edges gets, and how far the cover reaches past it */
+  position: relative; height: calc(100dvh - 10.5rem); min-height: 28rem; margin: 1.1rem 0 1.5rem; container-type: inline-size;
+}
+html[data-pages][data-focus] .page-stage { height: calc(100dvh - 8rem); }
+html[data-pages][data-spread] .page-stage { --pw: 50cqw; --pl: 2.7rem; --pr: 2.7rem; }
+/* The cover: blue cloth, like the chapter covers, showing round the open pages */
+html[data-pages] .page-stage::before {
+  content: ""; position: absolute; inset: -7px calc(-1 * (var(--stack) + var(--board))); border-radius: 5px;
+  --cloth: color-mix(in srgb, var(--cover) 62%, #6b5a3a);
+  background: radial-gradient(120% 140% at 50% 0%, color-mix(in srgb, var(--cloth) 88%, #fff), var(--cloth) 60%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cloth) 75%, #000), 0 2px 3px var(--shadow), 0 22px 34px -20px rgba(40, 26, 4, 0.6);
+}
+/* The page edges: the stack on the left grows as you read and the one on the right shrinks, so the book shows how far along you are */
+html[data-pages] .page-stage .edge {
+  position: absolute; top: 3px; bottom: 3px; z-index: 0;
+  background: repeating-linear-gradient(90deg, var(--sheet) 0 1.5px, color-mix(in srgb, var(--rule) 80%, var(--ink)) 1.5px 2px);
+  transition: width 400ms var(--ease-out);
+}
+html[data-pages] .page-stage .edge-l { right: 100%; width: calc(1px + var(--read) * (var(--stack) - 1px)); border-radius: 4px 0 0 4px; }
+html[data-pages] .page-stage .edge-r { left: 100%; width: calc(1px + (1 - var(--read)) * (var(--stack) - 1px)); border-radius: 0 4px 4px 0; }
+html[data-pages]:not([data-spread]) .page-stage .edge-l { display: none; }
+/* the crease of the spine */
+html[data-pages][data-spread] .page-stage::after { content: ""; position: absolute; z-index: 3; top: 0; bottom: 0; left: calc(50% - 1px); width: 2px; pointer-events: none; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink) 22%, transparent), transparent); }
+
+/* the two sheets of paper; the text strips are transparent and lie on top */
+html[data-pages] .page-stage .pg { position: absolute; top: 0; bottom: 0; z-index: 1; overflow: hidden; box-sizing: border-box; border: 1px solid var(--rule); box-shadow: 0 1px 3px var(--shadow); }
+html[data-pages] .page-stage .pg-r { left: 50%; right: 0; background: var(--face-r); border-radius: 0 4px 4px 0; border-left-color: transparent; }
+html[data-pages] .page-stage .pg-l { left: 0; right: 50%; background: var(--face-l); border-radius: 4px 0 0 4px; border-right-color: transparent; }
+html[data-pages]:not([data-spread]) .page-stage .pg-l { display: none; }
+html[data-pages]:not([data-spread]) .page-stage .pg-r { left: 0; border-radius: 2px 4px 4px 2px; border-left-color: var(--rule); }
+html[data-pages] .page-stage .pg.blank { background: color-mix(in srgb, var(--paper-2) 55%, var(--sheet)); }
+
+/* Running heads and page numbers sit in the page margins, as in print. The turning leaf carries copies of them (see PageReader). */
+html[data-pages] .page-stage :is(.folio, .runhead) { position: absolute; z-index: 3; pointer-events: none; color: var(--muted); }
+html[data-pages] .page-stage .folio { bottom: 0.9rem; width: var(--pw); text-align: center; font-family: var(--font-body), serif; font-size: 0.85rem; font-variant-numeric: oldstyle-nums; }
+html[data-pages] .page-stage .folio-l { left: 0; }
+html[data-pages] .page-stage .folio-r { right: 0; }
+html[data-pages] .page-stage .runhead {
+  top: 1rem; width: calc(var(--pw) - var(--pl) - var(--pr)); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-family: var(--font-body), serif; font-size: 0.82rem; font-style: italic; line-height: 1.2;
+}
+html[data-pages] .page-stage .runhead-l { left: var(--pl); }
+html[data-pages] .page-stage .runhead-r { right: var(--pr); text-align: right; }
+
+/* The outer margins turn the page when clicked; under the pointer the corner lifts to say so */
+html[data-pages] .page-stage .turn-zone { position: absolute; top: 0; bottom: 0; z-index: 3; width: var(--pr); cursor: pointer; background: none; border: 0; padding: 0; }
+html[data-pages] .page-stage .turn-zone:disabled { display: none; }
+html[data-pages] .page-stage .turn-next { right: 0; }
+html[data-pages] .page-stage .turn-prev { left: 0; width: var(--pl); }
+html[data-pages]:not([data-spread]) .page-stage .turn-prev { width: 1.4rem; }
+html[data-pages] .page-stage .turn-zone::after {
+  content: ""; position: absolute; bottom: 0; width: 0; height: 0;
+  --under: color-mix(in srgb, var(--sheet) 80%, var(--ink)); --flap: color-mix(in srgb, var(--sheet) 94%, #8a5a14);
+  filter: drop-shadow(-3px -3px 3px rgba(45, 28, 6, 0.35));
+  transition: width 180ms var(--ease-out), height 180ms var(--ease-out);
+}
+/* the near half of the square is the page beneath, the far half the folded-back corner */
+html[data-pages] .page-stage .turn-next::after { right: 0; border-radius: 0 0 4px 0; background: linear-gradient(to top left, var(--under) 50%, transparent 50%), linear-gradient(to bottom right, var(--flap), color-mix(in srgb, var(--flap) 90%, var(--ink)) 50%); }
+html[data-pages] .page-stage .turn-prev::after { left: 0; border-radius: 0 0 0 4px; background: linear-gradient(to top right, var(--under) 50%, transparent 50%), linear-gradient(to bottom left, var(--flap), color-mix(in srgb, var(--flap) 90%, var(--ink)) 50%); filter: drop-shadow(3px -3px 3px rgba(45, 28, 6, 0.35)); }
+@media (hover: hover) { html[data-pages] .page-stage .turn-zone:hover::after { width: 2.4rem; height: 2.4rem; } }
+
+/* The section rail under the book */
+html[data-pages] .rail { display: flex; flex: 1; gap: 3px; align-items: center; min-width: 0; margin: 0 0.75rem; }
+html[data-pages] .rail-seg {
+  flex-basis: 0; min-width: 3px; height: 1.6rem; padding: 0; border: 0; cursor: pointer;
+  background: linear-gradient(90deg, var(--blue) calc(var(--fill) * 100%), var(--rule) 0) center / 100% 4px no-repeat;
+  transition: background-size 120ms var(--ease-out);
+}
+html[data-pages] .rail-seg[aria-current] { background-size: 100% 6px; }
+@media (hover: hover) { html[data-pages] .rail-seg:hover { background-size: 100% 8px; } }
+@media (max-width: 640px) { html[data-pages] .rail { display: none; } }
+@media (prefers-reduced-motion: reduce) { html[data-pages] :is(.edge, .rail-seg), html[data-pages] .turn-zone::after { transition: none; } }
+
+html[data-pages] .page-stage .annot-wrap { position: absolute; inset: 0; pointer-events: none; }
+html[data-pages] .page-stage [data-annotation-popover] { pointer-events: auto; }
+
+/* A section is a clipped strip as wide as the whole book, set in columns exactly one page wide: text that does not fit continues in the next column. */
+html[data-pages] .page-stage [data-page], html[data-pages] .page-clone {
+  position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none;
+  padding: 2.6rem var(--pr) 3.1rem var(--pl);
+  column-width: calc(var(--pw) - var(--pl) - var(--pr)); column-gap: calc(var(--pl) + var(--pr)); column-fill: auto;
+}
+/* One empty column after the text, so the strip can always scroll far enough to show its last page in the left half of a spread. */
+html[data-pages] .page-stage [data-page]::after, html[data-pages] .page-clone::after { content: ""; display: block; break-before: column; height: 1px; }
+html[data-pages] .page-stage [data-page] * { pointer-events: auto; }
+/* The cover has to fit on a single, narrower page. */
+html[data-pages][data-spread] .page-stage [data-page="0"] h1 { font-size: 3.2rem !important; margin-top: 1rem !important; }
+html[data-pages][data-spread] .page-stage [data-page="0"] header { margin-bottom: 0.5rem; } /* two strips overlap; only the text itself takes the pointer */
+html[data-pages] .page-stage [data-page] > :first-child, html[data-pages] .page-clone > :first-child { margin-top: 0; }
+html[data-pages] .page-stage :is(h1, h2, h3), html[data-pages] .page-clone :is(h1, h2, h3) { break-after: avoid; }
+html[data-pages] .page-stage :is(.table-wrap, .note, blockquote, tr, li), html[data-pages] .page-clone :is(.table-wrap, .note, blockquote, tr, li) { break-inside: avoid; }
+@media (max-width: 640px) { html[data-pages] .page-stage { --pl: 1.7rem; --pr: 1.2rem; --stack: 5px; --board: 4px; } }
+
+/* The turning leaf: strips hinged to each other (see pageLeaf.ts). */
+html[data-pages] .page-clone-host { position: absolute; inset: 0; z-index: 4; pointer-events: none; perspective: 2800px; }
+html[data-pages] .clone-wrap { position: absolute; top: 0; }
+html[data-pages] .clone-wrap.book { max-width: none; }
+/* Stacked in the order they lie: the uncovered page (a .pg), the shadow on it, then the leaf over both */
+html[data-pages] .leaf-shadow { position: absolute; z-index: 1; top: 0; bottom: 0; opacity: 0; } /* placed and shaded as the leaf moves (pageLeaf.ts) */
+html[data-pages] .leaf-strip { position: absolute; z-index: 2; top: 0; transform-origin: 0 50%; transform-style: preserve-3d; will-change: transform; }
+html[data-pages] .leaf-front, html[data-pages] .leaf-back { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; background: var(--sheet); }
+html[data-pages] .leaf-back { transform: rotateY(180deg); background: color-mix(in srgb, var(--sheet) 94%, #8a5a14); }
+html[data-pages] .leaf-shade { position: absolute; inset: 0; background: #2a1a05; opacity: 0; pointer-events: none; }

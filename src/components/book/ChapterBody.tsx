@@ -74,13 +74,42 @@ export function ChapterBody({
     },
   };
 
+  // One wrapper per section so page mode can show a section per page. The exercise counter is shared, so numbering is unchanged.
   return (
     <div className="book">
-      <Markdown remarkPlugins={[remarkGfm]} components={components}>
-        {body}
-      </Markdown>
+      {splitSections(body).map((s, i) => (
+        <div key={s.id} data-page={i + 1}>
+          <Markdown remarkPlugins={[remarkGfm]} components={components}>
+            {s.md}
+          </Markdown>
+        </div>
+      ))}
     </div>
   );
+}
+
+/** Splits a chapter at its "##" headings (ignoring fenced blocks). Text before the first heading becomes an "Introduction" section. */
+export function splitSections(body: string) {
+  const out: { title: string; id: string; md: string }[] = [];
+  let fenced = false;
+  let cur: string[] = [];
+  let title = "Introduction";
+  const push = () => {
+    const md = cur.join("\n");
+    if (md.trim()) out.push({ title, id: headingId(title) || `s${out.length}`, md });
+  };
+  for (const line of body.split("\n")) {
+    if (/^\s*```/.test(line)) fenced = !fenced;
+    const h = !fenced && /^##\s+(.+)$/.exec(line);
+    if (h) {
+      push();
+      cur = [];
+      title = h[1].trim();
+    }
+    cur.push(line);
+  }
+  push();
+  return out;
 }
 
 export function outlineOf(body: string) {

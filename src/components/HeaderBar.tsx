@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ContentsEntry } from "@/lib/data";
-import { updateSettings } from "@/lib/settings";
 import { SettingsPanel } from "./SettingsPanel";
 
 export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: number }) {
@@ -42,9 +41,6 @@ export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: n
               Review
               {due > 0 && <span className="ml-1.5 rounded-full bg-red px-1.5 pb-0.5 text-sm text-paper">{due}</span>}
             </Link>
-            <button type="button" className="ui rounded-sm border border-rule px-2.5 py-1 text-base font-medium hover:border-blue" title="Hide everything except the page (F)" onClick={() => updateSettings({ focus: true })}>
-              Focus
-            </button>
             <SettingsPanel />
           </div>
         </div>

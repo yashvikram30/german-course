@@ -1,10 +1,12 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { pickVoice, speakText, updateSettings, useGermanVoices, useSettings, voiceGender } from "@/lib/settings";
 
 export function SettingsPanel() {
   const s = useSettings();
+  const path = usePathname();
   const voices = useGermanVoices();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,10 +35,23 @@ export function SettingsPanel() {
   return (
     <div ref={ref} className="relative">
       <button type="button" className="ui rounded-sm border border-rule px-2.5 py-1 text-base font-medium hover:border-blue" aria-expanded={open} aria-haspopup="dialog" onClick={() => setOpen(!open)}>
-        Text and voice
+        Settings
       </button>
       {open && (
-        <div role="dialog" aria-label="Reading and voice settings" className="pop-in ui absolute right-0 top-11 z-50 w-80 rounded-sm border-2 border-blue bg-paper p-4 text-base shadow-xl">
+        <div role="dialog" aria-label="View, reading and voice settings" className="pop-in ui absolute right-0 top-11 z-50 w-80 rounded-sm border-2 border-blue bg-paper p-4 text-base shadow-xl">
+          <p className="label !my-0">View</p>
+          {path.startsWith("/kapitel/") && (
+            <label className="mt-2 flex items-center gap-2">
+              <input type="checkbox" checked={s.pages} onChange={(e) => updateSettings(e.target.checked ? { pages: true, focus: true } : { pages: false, focus: false })} className="accent-[var(--blue)]" />
+              <span>Book view <span className="text-muted">(one section per page)</span></span>
+            </label>
+          )}
+          <label className="mt-2 flex items-center gap-2">
+            <input type="checkbox" checked={s.focus} onChange={(e) => updateSettings({ focus: e.target.checked })} className="accent-[var(--blue)]" />
+            <span>Focus mode <span className="text-muted">(hide the menus, key F)</span></span>
+          </label>
+
+          <hr className="my-3 border-rule" />
           <p className="label !my-0">Voice</p>
           <div className="mt-2 flex gap-2" role="group" aria-label="Voice gender">
             <button type="button" className={seg(s.gender === "female" && !s.voice)} onClick={() => updateSettings({ gender: "female", voice: "" })}>Female</button>
