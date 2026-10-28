@@ -1,5 +1,5 @@
 import { and, asc, desc, eq, gt, lte } from "drizzle-orm";
-import { chapterProgress, chapters, db, exerciseProgress, vocab, vocabProgress } from "@/db";
+import { annotations, chapterProgress, chapters, db, exerciseProgress, vocab, vocabProgress } from "@/db";
 import { parseExercise } from "@/lib/blocks";
 
 const countBlocks = (body: string, lang: string) => (body.match(new RegExp("```" + lang + "\\n", "g")) ?? []).length;
@@ -194,4 +194,13 @@ export function getStudyQueue(scope: string, mode: string, limit = 20) {
 export function getChapterTitle(id: string) {
   const c = db.select().from(chapters).where(eq(chapters.id, id)).get();
   return c ? `${c.order}. ${c.title}` : id;
+}
+
+export function getAnnotations(chapterId: string) {
+  return db
+    .select({ id: annotations.id, start: annotations.start, end: annotations.end, quote: annotations.quote, prefix: annotations.prefix, suffix: annotations.suffix, note: annotations.note })
+    .from(annotations)
+    .where(eq(annotations.chapterId, chapterId))
+    .orderBy(asc(annotations.start))
+    .all();
 }

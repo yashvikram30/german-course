@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ContentsEntry } from "@/lib/data";
+import { updateSettings } from "@/lib/settings";
 import { SettingsPanel } from "./SettingsPanel";
 
 export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: number }) {
@@ -23,7 +24,7 @@ export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: n
 
   return (
     <>
-      <header className="no-print sticky top-0 z-40 border-b-2 border-blue bg-paper">
+      <header className="no-print focus-hide sticky top-0 z-40 border-b-2 border-blue bg-paper">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2">
           <button type="button" className="ui flex items-center gap-2 rounded-sm px-2 py-1 text-base font-medium hover:bg-paper-2" aria-expanded={open} aria-controls="toc" onClick={() => setOpenFor(open ? null : path)}>
             <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
@@ -41,6 +42,9 @@ export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: n
               Review
               {due > 0 && <span className="ml-1.5 rounded-full bg-red px-1.5 pb-0.5 text-sm text-paper">{due}</span>}
             </Link>
+            <button type="button" className="ui rounded-sm border border-rule px-2.5 py-1 text-base font-medium hover:border-blue" title="Hide everything except the page (F)" onClick={() => updateSettings({ focus: true })}>
+              Focus
+            </button>
             <SettingsPanel />
           </div>
         </div>

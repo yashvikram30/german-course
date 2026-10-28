@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow_Semi_Condensed, Caveat, Gentium_Plus, Geist_Mono, Literata } from "next/font/google";
 import "./globals.css";
 import { ChatWidget } from "@/components/ChatWidget";
+import { FocusMode } from "@/components/FocusMode";
 import { Header } from "@/components/Header";
 
 // Everything reads the local database, so never prerender.
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="px-4 pb-24 pt-8 sm:px-6">{children}</main>
         <ChatWidget />
+        <FocusMode />
       </body>
     </html>
   );

@@ -66,3 +66,16 @@ export const examAttempts = sqliteTable("exam_attempts", {
   sprechen: real("sprechen").notNull(),
   total: integer("total").notNull(), // official points, 0..100
 });
+
+// Highlights and notes in the chapters. Anchored by the quoted text (plus a little context), not by DOM position.
+export const annotations = sqliteTable("annotations", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  chapterId: text("chapter_id").notNull(),
+  start: integer("start").notNull(), // character offset in the chapter text, used to pick between repeated quotes
+  end: integer("end").notNull(),
+  quote: text("quote").notNull(),
+  prefix: text("prefix").notNull().default(""),
+  suffix: text("suffix").notNull().default(""),
+  note: text("note").notNull().default(""),
+  createdAt: integer("created_at").notNull(),
+});

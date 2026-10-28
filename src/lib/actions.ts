@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { chapterProgress, db, examAttempts, exerciseProgress, vocab, vocabProgress } from "@/db";
+import { annotations, chapterProgress, db, examAttempts, exerciseProgress, vocab, vocabProgress } from "@/db";
 import { nextBox } from "./srs";
 
 const DAY = 86_400_000;
@@ -70,4 +70,23 @@ export async function saveExamAttempt(a: { examId: string; timed: boolean; hoere
   db.insert(examAttempts).values({ examId: a.examId, takenAt: Date.now(), timed: a.timed ? 1 : 0, hoeren, lesen, schreiben, sprechen, total }).run();
   revalidatePath("/pruefung");
   return { total };
+}
+
+/** Saves a highlight and returns its id. The note starts empty. */
+export async function addAnnotation(chapterId: string, a: { start: number; end: number; quote: string; prefix: string; suffix: string }) {
+  if (!a.quote.trim() || a.quote.length > 2000) throw new Error("Invalid highlight");
+  const row = db
+    .insert(annotations)
+    .values({ chapterId, start: a.start, end: a.end, quote: a.quote, prefix: a.prefix.slice(-60), suffix: a.suffix.slice(0, 60), createdAt: Date.now() })
+    .returning({ id: annotations.id })
+    .get();
+  return row.id;
+}
+
+export async function setAnnotationNote(id: number, note: string) {
+  db.update(annotations).set({ note: note.slice(0, 5000) }).where(eq(annotations.id, id)).run();
+}
+
+export async function deleteAnnotation(id: number) {
+  db.delete(annotations).where(eq(annotations.id, id)).run();
 }

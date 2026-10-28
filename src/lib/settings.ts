@@ -8,9 +8,10 @@ export interface Settings {
   rate: number; // 0.6 – 1.1
   translations: boolean;
   size: number; // text scale
+  focus: boolean; // distraction-free study mode
 }
 
-const DEFAULTS: Settings = { voice: "", gender: "female", rate: 0.9, translations: true, size: 1 };
+const DEFAULTS: Settings = { voice: "", gender: "female", rate: 0.9, translations: true, size: 1, focus: false };
 const KEY = "german-book-settings";
 
 let cache: Settings = DEFAULTS;

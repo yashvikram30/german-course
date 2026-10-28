@@ -29,6 +29,11 @@ sqlite.exec(`CREATE TABLE IF NOT EXISTS exam_attempts (
   timed INTEGER NOT NULL DEFAULT 1, hoeren REAL NOT NULL, lesen REAL NOT NULL,
   schreiben REAL NOT NULL, sprechen REAL NOT NULL, total INTEGER NOT NULL)`);
 
+sqlite.exec(`CREATE TABLE IF NOT EXISTS annotations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, chapter_id TEXT NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL,
+  quote TEXT NOT NULL, prefix TEXT NOT NULL DEFAULT '', suffix TEXT NOT NULL DEFAULT '',
+  note TEXT NOT NULL DEFAULT '', created_at INTEGER NOT NULL)`);
+
 export const db = drizzle(sqlite, { schema });
 export { sqlite };
 export * from "./schema";

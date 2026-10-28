@@ -77,7 +77,7 @@ export function ChatWidget() {
   }
 
   return (
-    <div className="no-print fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+    <div className="no-print focus-hide fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
       {open && (
         <div className="ui flex h-[32rem] max-h-[75vh] w-[23rem] max-w-[92vw] flex-col rounded-sm border-2 border-blue bg-paper shadow-2xl" role="dialog" aria-label="German tutor">
           <div className="flex items-center justify-between border-b-2 border-blue px-4 py-2">

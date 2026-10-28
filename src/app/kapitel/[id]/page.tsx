@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { ChapterActionsBottom } from "@/components/book/ChapterNav";
 import { ChapterBody, outlineOf } from "@/components/book/ChapterBody";
 import { ChapterTracker } from "@/components/book/ChapterActions";
-import { getChapter, getContents } from "@/lib/data";
+import { Annotator } from "@/components/book/Annotator";
+import { getAnnotations, getChapter, getContents } from "@/lib/data";
 
 export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
   const { id } = await props.params;
@@ -34,15 +35,17 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
           </div>
         </header>
 
-        <ChapterBody
-          chapterId={id}
-          body={chapter.body}
-          exercises={new Map([...exercises].map(([k, v]) => [k, { best: v.best, total: v.total }]))}
-        />
+        <Annotator chapterId={id} initial={getAnnotations(id)}>
+          <ChapterBody
+            chapterId={id}
+            body={chapter.body}
+            exercises={new Map([...exercises].map(([k, v]) => [k, { best: v.best, total: v.total }]))}
+          />
+        </Annotator>
 
         <ChapterActionsBottom id={id} read={read !== null} words={words} prev={prev} next={next} />
 
-        <p className="ui mt-12 border-t border-rule pt-4 text-base text-muted">
+        <p className="focus-hide ui mt-12 border-t border-rule pt-4 text-base text-muted">
           Grammar explanations and example sentences adapted in part from{" "}
           <a className="underline" href="https://en.wikibooks.org/wiki/German">Wikibooks: German</a> (CC BY-SA) and{" "}
           <a className="underline" href="https://coerll.utexas.edu/dib/">Deutsch im Blick</a> (CC BY 4.0).{" "}
@@ -50,7 +53,7 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
         </p>
       </article>
 
-      <nav aria-label="On this page" className="ui sticky top-20 hidden h-fit w-56 shrink-0 text-base xl:block">
+      <nav aria-label="On this page" className="focus-hide ui sticky top-20 hidden h-fit w-56 shrink-0 text-base xl:block">
         <p className="label !my-0">On this page</p>
         <ol className="mt-3 space-y-2 border-l-2 border-rule pl-3">
           {outline.map((o) => (
