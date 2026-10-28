@@ -1,0 +1,21 @@
+{
+  "id": "u01-l04",
+  "unitId": "u01",
+  "order": 4,
+  "type": "review",
+  "title": "Review: Hallo! Ich bin…",
+  "vocabIds": [],
+  "exercises": [
+    { "type": "gap", "prompt": "Woher ___ Sie?", "answer": ["kommen"], "hint": "kommen with Sie", "explain": "Sie takes the infinitive form: Sie kommen." },
+    { "type": "gap", "prompt": "Wir ___ aus Indien.", "answer": ["sind"], "hint": "sein with wir", "explain": "wir sind." },
+    { "type": "gap", "prompt": "Du ___ Deutsch.", "answer": ["sprichst"], "hint": "sprechen with du", "explain": "sprechen changes e → i: du sprichst." },
+    { "type": "order", "prompt": "Where are you from? (informal)", "answer": ["Woher", "kommst", "du"], "explain": "Question word first, verb second." },
+    { "type": "listen", "text": "Wie heißen Sie?", "options": ["What is your name? (formal)", "What is your name? (informal)", "Where are you from?", "How are you?"], "answer": "What is your name? (formal)", "explain": "heißen + Sie is formal." },
+    { "type": "mcq", "prompt": "You meet a ten-year-old child. Which pronoun do you use?", "options": ["du", "Sie", "wir", "er"], "answer": "du", "explain": "Children are always addressed with du." },
+    { "type": "mcq", "prompt": "Which answer fits “Sind Sie Frau Weber?”", "options": ["Ja, ich bin Frau Weber.", "Ja, ich heißt Frau Weber.", "Ja, ich kommst aus Berlin.", "Ja, du bist Frau Weber."], "answer": "Ja, ich bin Frau Weber.", "explain": "ich bin matches the question." },
+    { "type": "mcq", "prompt": "Which number comes after neun?", "options": ["acht", "zehn", "elf", "sieben"], "answer": "zehn", "explain": "neun (9) → zehn (10)." },
+    { "type": "match", "prompt": "Match the words.", "pairs": [["Tschüss", "bye"], ["bitte", "please"], ["danke", "thank you"], ["Entschuldigung", "excuse me"]] }
+  ],
+  "culture": "Review is where memory sticks. Missed words come back in your Review queue, so the more you practise, the shorter the lists get.",
+  "canDo": ["I can use the verbs heißen, kommen, wohnen, sein and sprechen with ich, du and Sie."]
+}

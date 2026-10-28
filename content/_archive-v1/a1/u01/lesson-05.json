@@ -1,0 +1,25 @@
+{
+  "id": "u01-l05",
+  "unitId": "u01",
+  "order": 5,
+  "type": "test",
+  "title": "Unit 1 test",
+  "passMark": 70,
+  "vocabIds": [],
+  "exercises": [
+    { "type": "listen", "text": "Guten Tag, ich heiße Anna.", "options": ["Hello, my name is Anna.", "Goodbye, I am Anna.", "Hello, are you Anna?", "Hi, where is Anna?"], "answer": "Hello, my name is Anna.", "explain": "Guten Tag = hello, ich heiße = my name is." },
+    { "type": "listen", "text": "Sprechen Sie Deutsch?", "options": ["Do you speak German? (formal)", "Do you speak German? (informal)", "I speak German.", "Where do you speak German?"], "answer": "Do you speak German? (formal)", "explain": "Sie + a verb first = a formal yes/no question." },
+    { "type": "mcq", "prompt": "Which is the formal question?", "options": ["Wie heißt du?", "Wie heißen Sie?", "Woher kommst du?", "Bist du Anna?"], "answer": "Wie heißen Sie?", "explain": "Sie is the formal “you”." },
+    { "type": "gap", "prompt": "Ich ___ aus Indien.", "answer": ["komme"], "hint": "kommen with ich", "explain": "ich → -e." },
+    { "type": "gap", "prompt": "Wie ___ du?", "answer": ["heißt"], "hint": "heißen with du", "explain": "du heißt (not heißst)." },
+    { "type": "gap", "prompt": "Er ___ Hindi.", "answer": ["spricht"], "hint": "sprechen with er", "explain": "sprechen → er spricht." },
+    { "type": "gap", "prompt": "Wir ___ aus Deutschland.", "answer": ["sind"], "hint": "sein with wir", "explain": "wir sind." },
+    { "type": "order", "prompt": "Are you Mr Patel? (formal)", "answer": ["Sind", "Sie", "Herr", "Patel"], "explain": "A yes/no question starts with the verb." },
+    { "type": "order", "prompt": "I speak English and Hindi.", "answer": ["Ich", "spreche", "Englisch", "und", "Hindi"], "explain": "Subject, verb in position 2." },
+    { "type": "match", "prompt": "Match the numbers.", "pairs": [["null", "0"], ["vier", "4"], ["sechs", "6"], ["zehn", "10"]] },
+    { "type": "mcq", "prompt": "Fünf plus drei ist …", "options": ["sieben", "acht", "neun", "sechs"], "answer": "acht", "explain": "5 + 3 = 8 = acht." },
+    { "type": "mcq", "prompt": "A friend says “Danke!”. You reply…", "options": ["Bitte!", "Tschüss!", "Hallo!", "Nein"], "answer": "Bitte!", "explain": "bitte = you're welcome." }
+  ],
+  "culture": "You have finished Unit 1: you can greet people, give your name, say where you are from, use sein, count to ten and spell aloud. Next up: family and describing people.",
+  "canDo": ["I can introduce myself, spell my name and count to ten in German."]
+}

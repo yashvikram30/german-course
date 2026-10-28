@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
+/* Schulheft: cool paper, blue fountain-pen ink, the teacher's red pencil.
+   Dark mode is the Tafel: a green-slate chalkboard. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #f5f6f2;
+  --paper-2: #eceee8;
+  --sheet: #ffffff;
+  --ink: #1c2330;
+  --muted: #5b6372;
+  --rule: #d5d9e0;
+  --grid: #e1ecf7;
+  --blue: #1b2f8f;
+  --red: #c3202d;
+  --marker: #ffe45c;
+  --good: #1f7a4d;
+  --der: #1d55c4;
+  --die: #c42a6a;
+  --das: #1f7a4d;
+  --shadow: rgba(24, 36, 80, 0.22);
+  --cover: #1b2f8f;
+  --on-cover: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #1b2624;
+    --paper-2: #202c29;
+    --sheet: #243431;
+    --ink: #e8ece4;
+    --muted: #a3b3ac;
+    --rule: #384a45;
+    --grid: #2b3d39;
+    --blue: #9db8ff;
+    --red: #ff8c8c;
+    --marker: #d9c45a;
+    --good: #7fd1a0;
+    --der: #8db2ff;
+    --die: #ff9cc0;
+    --das: #7fd1a0;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --cover: #2a3a82;
+    --on-cover: #e8ece4;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-grid: var(--grid);
+  --color-blue: var(--blue);
+  --color-cover: var(--cover);
+  --color-red: var(--red);
+  --color-marker: var(--marker);
+  --color-good: var(--good);
+  --color-der: var(--der);
+  --color-die: var(--die);
+  --color-das: var(--das);
+  --font-body: var(--font-body);
+  --font-ui: var(--font-ui);
+  --font-hand: var(--font-hand);
+  --font-ipa: var(--font-ipa);
 }
+
+:root {
+  --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1); /* ease-out-quart */
+}
+
+html { font-size: calc(17px * var(--text-scale, 1)); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), Georgia, serif;
+  line-height: 1.7;
+  font-optical-sizing: auto;
+}
+
+@layer components {
+  .ui { font-family: var(--font-ui), system-ui, sans-serif; }
+  .hand { font-family: var(--font-hand), cursive; }
+  .ipa { font-family: var(--font-ipa), 'Gentium Plus', 'Doulos SIL', serif; font-size: 1.02em; letter-spacing: 0.01em; }
+  .label { font-family: var(--font-ui), system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+
+  /* ---------- Reading typography ---------- */
+  .book { max-width: 38rem; }
+  .book h2 { margin: 3.5rem 0 0.9rem; font-family: var(--font-ui), sans-serif; font-size: 1.9rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; scroll-margin-top: 5rem; }
+  .book h3 { margin: 2.2rem 0 0.4rem; font-family: var(--font-ui), sans-serif; font-size: 1.3rem; font-weight: 600; color: var(--blue); scroll-margin-top: 5rem; }
+  .book p { margin: 0.95rem 0; hyphens: auto; }
+  .book ul, .book ol { margin: 0.95rem 0; padding-left: 1.5rem; }
+  .book ul { list-style: "– "; }
+  .book ol { list-style: decimal; }
+  .book li { margin: 0.35rem 0; padding-left: 0.2rem; }
+  .book strong { font-weight: 700; }
+  .book a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+  .book table, .tbl table { width: 100%; margin: 1.4rem 0; border-collapse: collapse; font-size: 0.95rem; line-height: 1.5; }
+  .book thead th, .tbl thead th { text-align: left; font-family: var(--font-ui), sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--muted); border-bottom: 2px solid var(--blue); padding: 0.4rem 0.7rem 0.4rem 0; }
+  .book td, .tbl td { padding: 0.5rem 0.7rem 0.5rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .book .table-wrap, .tbl .table-wrap { overflow-x: auto; }
+  .book code { font-family: var(--font-mono), monospace; font-size: 0.85em; }
+
+  /* Gender is shown as highlighter marks on the article. */
+  .mark { padding: 0 0.12em; border-radius: 1px; font-weight: 600; }
+  .mark-der { background: linear-gradient(transparent 52%, color-mix(in srgb, var(--der) 32%, transparent) 52%); }
+  .mark-die { background: linear-gradient(transparent 52%, color-mix(in srgb, var(--die) 32%, transparent) 52%); }
+  .mark-das { background: linear-gradient(transparent 52%, color-mix(in srgb, var(--das) 32%, transparent) 52%); }
+
+  /* ---------- Notes in the margin of the Heft ---------- */
+  .note { position: relative; margin: 2rem 0; padding: 0.6rem 0 0.6rem 1.3rem; border-left: 3px solid var(--rule); }
+  .note > .note-title { font-family: var(--font-hand), cursive; font-size: 1.55rem; line-height: 1; margin: 0 0 0.2rem; display: inline-block; transform: rotate(-1.5deg); transform-origin: left center; }
+  .note-merke { border-left-color: var(--marker); background: color-mix(in srgb, var(--marker) 16%, transparent); padding-right: 1rem; }
+  .note-merke > .note-title { color: var(--red); }
+  .note-achtung { border-left: 3px double var(--red); }
+  .note-achtung > .note-title { color: var(--red); }
+  .note-tipp { border-left-color: var(--blue); }
+  .note-tipp > .note-title { color: var(--blue); }
+  .note-kultur { border-left-color: var(--good); }
+  .note-kultur > .note-title { color: var(--good); }
+  .note-englisch { border-left-style: dashed; border-left-color: var(--muted); }
+  .note-englisch > .note-title { color: var(--muted); }
+
+  /* ---------- Buttons and fields ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; font-family: var(--font-ui), sans-serif; font-size: 1rem; font-weight: 600; border: 1.5px solid var(--blue); border-radius: 3px; padding: 0.45rem 1rem; background: transparent; color: var(--blue); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+  .btn:disabled { opacity: 0.4; pointer-events: none; }
+  .btn-solid { background: var(--blue); color: var(--paper); }
+  @media (hover: hover) {
+    .btn:hover { background: var(--blue); color: var(--paper); }
+    .btn-solid:hover { background: var(--ink); border-color: var(--ink); }
+  }
+  .btn:active { transform: translateY(1px); }
+  :where(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  /* ---------- The Arbeitsblatt: graph paper with a red margin line ---------- */
+  .sheet {
+    position: relative;
+    background-color: var(--sheet);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 1.45rem 1.45rem;
+    border: 1px solid var(--rule);
+    padding: 1.4rem 1.4rem 1.5rem 3.6rem;
+    box-shadow: 0 1px 0 var(--rule), 0 14px 22px -18px var(--shadow);
+  }
+  .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 2.6rem; width: 2px; background: var(--red); opacity: 0.75; }
+  .sheet-title { font-family: var(--font-ui), sans-serif; font-size: 1.35rem; font-weight: 700; line-height: 1.2; margin: 0; }
+  .ink { font-family: var(--font-hand), cursive; font-size: 1.9rem; line-height: 1; color: var(--blue); }
+  .ink-field { font-family: var(--font-hand), cursive; font-size: 1.95rem; line-height: 1.1; color: var(--blue); background: transparent; border: 0; border-bottom: 2px dotted var(--blue); border-radius: 0; text-align: center; padding: 0 0.3rem; min-width: 5.5rem; }
+  .ink-field:focus { background: color-mix(in srgb, var(--marker) 22%, transparent); outline: none; border-bottom-style: solid; }
+  .ink-field:disabled { opacity: 1; }
+  .struck { text-decoration: line-through 2px var(--red); color: var(--ink); opacity: 0.75; }
+  .correction { font-family: var(--font-hand), cursive; font-size: 1.9rem; line-height: 1; color: var(--red); }
+  .ruled { background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.95rem - 1px), var(--grid) calc(1.95rem - 1px) 1.95rem); line-height: 1.95rem; padding: 0 0.4rem; background-color: transparent; border: 0; border-bottom: 1px solid var(--grid); width: 100%; resize: vertical; }
+  .circled { border: 2px solid var(--blue); border-radius: 52% 48% 55% 45% / 55% 50% 50% 45%; padding: 0.05rem 0.65rem; transform: rotate(-1deg); }
+  .circled-red { border: 2px solid var(--red); border-radius: 48% 52% 45% 55% / 50% 55% 45% 50%; padding: 0.05rem 0.65rem; transform: rotate(1deg); }
+  .grade { display: inline-block; font-family: var(--font-hand), cursive; color: var(--red); font-size: 2rem; line-height: 1.1; border: 3px solid var(--red); border-radius: 50% 46% 52% 48% / 52% 50% 48% 50%; padding: 0.15rem 1.1rem; transform: rotate(-3deg); }
+
+  /* Index cards: the German Karteikasten */
+  .karte {
+    background-color: var(--sheet);
+    background-image:
+      linear-gradient(transparent 2.6rem, var(--red) 2.6rem, var(--red) calc(2.6rem + 2px), transparent calc(2.6rem + 2px)),
+      repeating-linear-gradient(to bottom, transparent 0 calc(1.75rem - 1px), var(--grid) calc(1.75rem - 1px) 1.75rem);
+    background-position: 0 0, 0 2.8rem;
+    border: 1px solid var(--rule);
+    box-shadow: 0 1px 0 var(--rule), 0 12px 20px -16px var(--shadow);
+  }
+
+  /* ---------- Motion: only in answer to something you did ---------- */
+  .pop-in { animation: pop-in 160ms var(--ease-out) both; transform-origin: top right; }
+  .drawer-in { animation: drawer-in 220ms var(--ease-out) both; }
+  .fade-in { animation: fade-in 180ms ease both; }
+  .stamp-in { animation: stamp-in 240ms var(--ease-out) both; }
+  .tick path { stroke-dasharray: 26; stroke-dashoffset: 26; animation: draw 280ms var(--ease-out) 40ms forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .pop-in, .drawer-in, .fade-in, .stamp-in { animation: none; }
+    .tick path { animation: none; stroke-dashoffset: 0; }
+  }
+  @media print { header, .no-print { display: none !important; } }
+}
+
+@keyframes pop-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes drawer-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stamp-in { from { opacity: 0; transform: rotate(-3deg) scale(0.92); } to { opacity: 1; transform: rotate(-3deg) scale(1); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }

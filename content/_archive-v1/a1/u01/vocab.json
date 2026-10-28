@@ -1,0 +1,629 @@
+[
+ {
+  "id": "hallo",
+  "lemma": "Hallo",
+  "pos": "interjection",
+  "translation": "hello, hi",
+  "ipa": "/ˈhalo/",
+  "example": "Hallo, Anna!",
+  "exampleEn": "Hi, Anna!",
+  "tags": [
+   "greeting"
+  ]
+ },
+ {
+  "id": "guten-tag",
+  "lemma": "Guten Tag",
+  "pos": "phrase",
+  "translation": "hello, good day (formal)",
+  "ipa": "/ˌɡuːtn̩ ˈtaːk/",
+  "example": "Guten Tag, Frau Weber.",
+  "exampleEn": "Good day, Mrs Weber.",
+  "tags": [
+   "greeting",
+   "formal"
+  ]
+ },
+ {
+  "id": "tschuess",
+  "lemma": "Tschüss",
+  "pos": "interjection",
+  "translation": "bye",
+  "ipa": "/tʃʏs/",
+  "example": "Tschüss, Raj!",
+  "exampleEn": "Bye, Raj!",
+  "tags": [
+   "greeting"
+  ]
+ },
+ {
+  "id": "auf-wiedersehen",
+  "lemma": "Auf Wiedersehen",
+  "pos": "phrase",
+  "translation": "goodbye (formal)",
+  "ipa": "/aʊ̯f ˈviːdɐˌzeːən/",
+  "example": "Auf Wiedersehen, Herr Weber.",
+  "exampleEn": "Goodbye, Mr Weber.",
+  "tags": [
+   "greeting",
+   "formal"
+  ]
+ },
+ {
+  "id": "ich",
+  "lemma": "ich",
+  "pos": "pronoun",
+  "translation": "I",
+  "ipa": "/ɪç/",
+  "example": "Ich heiße Anna.",
+  "exampleEn": "My name is Anna.",
+  "tags": [
+   "pronoun"
+  ]
+ },
+ {
+  "id": "du",
+  "lemma": "du",
+  "pos": "pronoun",
+  "translation": "you (informal)",
+  "ipa": "/duː/",
+  "example": "Woher kommst du?",
+  "exampleEn": "Where are you from?",
+  "tags": [
+   "pronoun"
+  ]
+ },
+ {
+  "id": "sie-formal",
+  "lemma": "Sie",
+  "pos": "pronoun",
+  "translation": "you (formal)",
+  "ipa": "/ziː/",
+  "example": "Wie heißen Sie?",
+  "exampleEn": "What is your name? (formal)",
+  "tags": [
+   "pronoun",
+   "formal"
+  ]
+ },
+ {
+  "id": "heissen",
+  "lemma": "heißen",
+  "pos": "verb",
+  "translation": "to be called",
+  "ipa": "/ˈhaɪ̯sn̩/",
+  "example": "Ich heiße Raj.",
+  "exampleEn": "My name is Raj.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "kommen",
+  "lemma": "kommen",
+  "pos": "verb",
+  "translation": "to come",
+  "ipa": "/ˈkɔmən/",
+  "example": "Ich komme aus Indien.",
+  "exampleEn": "I come from India.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "wohnen",
+  "lemma": "wohnen",
+  "pos": "verb",
+  "translation": "to live, to reside",
+  "ipa": "/ˈvoːnən/",
+  "example": "Ich wohne in Berlin.",
+  "exampleEn": "I live in Berlin.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "name",
+  "lemma": "Name",
+  "article": "der",
+  "plural": "-n",
+  "pos": "noun",
+  "translation": "name",
+  "ipa": "/ˈnaːmə/",
+  "example": "Mein Name ist Anna.",
+  "exampleEn": "My name is Anna.",
+  "tags": [
+   "noun"
+  ]
+ },
+ {
+  "id": "land",
+  "lemma": "Land",
+  "article": "das",
+  "plural": "¨-er",
+  "pos": "noun",
+  "translation": "country",
+  "ipa": "/lant/",
+  "example": "Indien ist ein Land.",
+  "exampleEn": "India is a country.",
+  "tags": [
+   "noun",
+   "geography"
+  ]
+ },
+ {
+  "id": "deutschland",
+  "lemma": "Deutschland",
+  "article": "das",
+  "pos": "noun",
+  "translation": "Germany",
+  "ipa": "/ˈdɔʏ̯tʃlant/",
+  "example": "Ich komme aus Deutschland.",
+  "exampleEn": "I come from Germany.",
+  "tags": [
+   "geography"
+  ]
+ },
+ {
+  "id": "indien",
+  "lemma": "Indien",
+  "article": "das",
+  "pos": "noun",
+  "translation": "India",
+  "ipa": "/ˈɪndi̯ən/",
+  "example": "Ich komme aus Indien.",
+  "exampleEn": "I come from India.",
+  "tags": [
+   "geography"
+  ]
+ },
+ {
+  "id": "wie",
+  "lemma": "wie",
+  "pos": "question word",
+  "translation": "how, what (in names)",
+  "ipa": "/viː/",
+  "example": "Wie heißt du?",
+  "exampleEn": "What is your name?",
+  "tags": [
+   "question"
+  ]
+ },
+ {
+  "id": "woher",
+  "lemma": "woher",
+  "pos": "question word",
+  "translation": "from where",
+  "ipa": "/voˈheːɐ̯/",
+  "example": "Woher kommen Sie?",
+  "exampleEn": "Where do you come from? (formal)",
+  "tags": [
+   "question"
+  ]
+ },
+ {
+  "id": "aus",
+  "lemma": "aus",
+  "pos": "preposition",
+  "translation": "from, out of",
+  "ipa": "/aʊ̯s/",
+  "example": "Ich komme aus Indien.",
+  "exampleEn": "I come from India.",
+  "tags": [
+   "preposition"
+  ]
+ },
+ {
+  "id": "und",
+  "lemma": "und",
+  "pos": "conjunction",
+  "translation": "and",
+  "ipa": "/ʊnt/",
+  "example": "Und du?",
+  "exampleEn": "And you?",
+  "tags": [
+   "conjunction"
+  ]
+ },
+ {
+  "id": "sein",
+  "lemma": "sein",
+  "pos": "verb",
+  "translation": "to be",
+  "ipa": "/zaɪ̯n/",
+  "example": "Ich bin Raj.",
+  "exampleEn": "I am Raj.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "er",
+  "lemma": "er",
+  "pos": "pronoun",
+  "translation": "he",
+  "ipa": "/eːɐ̯/",
+  "example": "Er ist aus Indien.",
+  "exampleEn": "He is from India.",
+  "tags": [
+   "pronoun"
+  ]
+ },
+ {
+  "id": "sie-she",
+  "lemma": "sie",
+  "pos": "pronoun",
+  "translation": "she",
+  "ipa": "/ziː/",
+  "example": "Sie kommt aus Deutschland.",
+  "exampleEn": "She comes from Germany.",
+  "tags": [
+   "pronoun"
+  ]
+ },
+ {
+  "id": "wir",
+  "lemma": "wir",
+  "pos": "pronoun",
+  "translation": "we",
+  "ipa": "/viːɐ̯/",
+  "example": "Wir sind aus Deutschland.",
+  "exampleEn": "We are from Germany.",
+  "tags": [
+   "pronoun"
+  ]
+ },
+ {
+  "id": "frau",
+  "lemma": "Frau",
+  "pos": "noun",
+  "translation": "Mrs, Ms, woman",
+  "ipa": "/fʁaʊ̯/",
+  "example": "Guten Tag, Frau Weber.",
+  "exampleEn": "Good day, Mrs Weber.",
+  "tags": [
+   "noun"
+  ],
+  "article": "die",
+  "plural": "-en"
+ },
+ {
+  "id": "herr",
+  "lemma": "Herr",
+  "pos": "noun",
+  "translation": "Mr, man",
+  "ipa": "/hɛʁ/",
+  "example": "Guten Tag, Herr Patel.",
+  "exampleEn": "Good day, Mr Patel.",
+  "tags": [
+   "noun"
+  ],
+  "article": "der",
+  "plural": "-en"
+ },
+ {
+  "id": "sprache",
+  "lemma": "Sprache",
+  "pos": "noun",
+  "translation": "language",
+  "ipa": "/ˈʃpʁaːxə/",
+  "example": "Deutsch ist eine Sprache.",
+  "exampleEn": "German is a language.",
+  "tags": [
+   "noun"
+  ],
+  "article": "die",
+  "plural": "-n"
+ },
+ {
+  "id": "sprechen",
+  "lemma": "sprechen",
+  "pos": "verb",
+  "translation": "to speak",
+  "ipa": "/ˈʃpʁɛçn̩/",
+  "example": "Ich spreche Hindi und Englisch.",
+  "exampleEn": "I speak Hindi and English.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "deutsch",
+  "lemma": "Deutsch",
+  "pos": "noun",
+  "translation": "German (language)",
+  "ipa": "/dɔʏ̯tʃ/",
+  "example": "Sprechen Sie Deutsch?",
+  "exampleEn": "Do you speak German?",
+  "tags": [
+   "language"
+  ],
+  "article": "das"
+ },
+ {
+  "id": "englisch",
+  "lemma": "Englisch",
+  "pos": "noun",
+  "translation": "English (language)",
+  "ipa": "/ˈɛŋlɪʃ/",
+  "example": "Ich spreche Englisch.",
+  "exampleEn": "I speak English.",
+  "tags": [
+   "language"
+  ],
+  "article": "das"
+ },
+ {
+  "id": "hindi",
+  "lemma": "Hindi",
+  "pos": "noun",
+  "translation": "Hindi (language)",
+  "ipa": "/ˈhɪndi/",
+  "example": "Er spricht Hindi.",
+  "exampleEn": "He speaks Hindi.",
+  "tags": [
+   "language"
+  ],
+  "article": "das"
+ },
+ {
+  "id": "ja",
+  "lemma": "ja",
+  "pos": "particle",
+  "translation": "yes",
+  "ipa": "/jaː/",
+  "example": "Ja, ich bin Raj.",
+  "exampleEn": "Yes, I am Raj.",
+  "tags": [
+   "particle"
+  ]
+ },
+ {
+  "id": "nein",
+  "lemma": "nein",
+  "pos": "particle",
+  "translation": "no",
+  "ipa": "/naɪ̯n/",
+  "example": "Nein, ich komme aus Indien.",
+  "exampleEn": "No, I come from India.",
+  "tags": [
+   "particle"
+  ]
+ },
+ {
+  "id": "ein-bisschen",
+  "lemma": "ein bisschen",
+  "pos": "phrase",
+  "translation": "a little",
+  "ipa": "/aɪ̯n ˈbɪsçən/",
+  "example": "Ja, ein bisschen.",
+  "exampleEn": "Yes, a little.",
+  "tags": [
+   "phrase"
+  ]
+ },
+ {
+  "id": "buchstabe",
+  "lemma": "Buchstabe",
+  "pos": "noun",
+  "translation": "letter (of the alphabet)",
+  "ipa": "/ˈbuːxʃtaːbə/",
+  "example": "Das ist ein Buchstabe.",
+  "exampleEn": "That is a letter.",
+  "tags": [
+   "noun"
+  ],
+  "article": "der",
+  "plural": "-n"
+ },
+ {
+  "id": "buchstabieren",
+  "lemma": "buchstabieren",
+  "pos": "verb",
+  "translation": "to spell",
+  "ipa": "/ˌbuːxʃtaˈbiːʁən/",
+  "example": "Bitte buchstabieren Sie.",
+  "exampleEn": "Please spell it.",
+  "tags": [
+   "verb"
+  ]
+ },
+ {
+  "id": "zahl",
+  "lemma": "Zahl",
+  "pos": "noun",
+  "translation": "number, figure",
+  "ipa": "/tsaːl/",
+  "example": "Sieben ist eine Zahl.",
+  "exampleEn": "Seven is a number.",
+  "tags": [
+   "noun"
+  ],
+  "article": "die",
+  "plural": "¨-en"
+ },
+ {
+  "id": "telefonnummer",
+  "lemma": "Telefonnummer",
+  "pos": "noun",
+  "translation": "phone number",
+  "ipa": "/teleˈfoːnˌnʊmɐ/",
+  "example": "Wie ist die Telefonnummer?",
+  "exampleEn": "What is the phone number?",
+  "tags": [
+   "noun"
+  ],
+  "article": "die",
+  "plural": "-n"
+ },
+ {
+  "id": "bitte",
+  "lemma": "bitte",
+  "pos": "particle",
+  "translation": "please; you're welcome",
+  "ipa": "/ˈbɪtə/",
+  "example": "Bitte buchstabieren Sie.",
+  "exampleEn": "Please spell it.",
+  "tags": [
+   "politeness"
+  ]
+ },
+ {
+  "id": "danke",
+  "lemma": "danke",
+  "pos": "particle",
+  "translation": "thank you",
+  "ipa": "/ˈdaŋkə/",
+  "example": "Danke, Frau Weber!",
+  "exampleEn": "Thank you, Mrs Weber!",
+  "tags": [
+   "politeness"
+  ]
+ },
+ {
+  "id": "entschuldigung",
+  "lemma": "Entschuldigung",
+  "pos": "interjection",
+  "translation": "excuse me, sorry",
+  "ipa": "/ɛntˈʃʊldɪɡʊŋ/",
+  "example": "Entschuldigung, wie bitte?",
+  "exampleEn": "Excuse me, pardon?",
+  "tags": [
+   "politeness"
+  ],
+  "article": "die",
+  "plural": "-en"
+ },
+ {
+  "id": "num-null",
+  "lemma": "null",
+  "pos": "number",
+  "translation": "0",
+  "ipa": "/nʊl/",
+  "example": "Null, bitte.",
+  "exampleEn": "0, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-eins",
+  "lemma": "eins",
+  "pos": "number",
+  "translation": "1",
+  "ipa": "/aɪ̯ns/",
+  "example": "Eins, bitte.",
+  "exampleEn": "1, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-zwei",
+  "lemma": "zwei",
+  "pos": "number",
+  "translation": "2",
+  "ipa": "/tsvaɪ̯/",
+  "example": "Zwei, bitte.",
+  "exampleEn": "2, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-drei",
+  "lemma": "drei",
+  "pos": "number",
+  "translation": "3",
+  "ipa": "/dʁaɪ̯/",
+  "example": "Drei, bitte.",
+  "exampleEn": "3, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-vier",
+  "lemma": "vier",
+  "pos": "number",
+  "translation": "4",
+  "ipa": "/fiːɐ̯/",
+  "example": "Vier, bitte.",
+  "exampleEn": "4, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-fuenf",
+  "lemma": "fünf",
+  "pos": "number",
+  "translation": "5",
+  "ipa": "/fʏnf/",
+  "example": "Fünf, bitte.",
+  "exampleEn": "5, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-sechs",
+  "lemma": "sechs",
+  "pos": "number",
+  "translation": "6",
+  "ipa": "/zɛks/",
+  "example": "Sechs, bitte.",
+  "exampleEn": "6, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-sieben",
+  "lemma": "sieben",
+  "pos": "number",
+  "translation": "7",
+  "ipa": "/ˈziːbn̩/",
+  "example": "Sieben, bitte.",
+  "exampleEn": "7, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-acht",
+  "lemma": "acht",
+  "pos": "number",
+  "translation": "8",
+  "ipa": "/axt/",
+  "example": "Acht, bitte.",
+  "exampleEn": "8, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-neun",
+  "lemma": "neun",
+  "pos": "number",
+  "translation": "9",
+  "ipa": "/nɔʏ̯n/",
+  "example": "Neun, bitte.",
+  "exampleEn": "9, please.",
+  "tags": [
+   "number"
+  ]
+ },
+ {
+  "id": "num-zehn",
+  "lemma": "zehn",
+  "pos": "number",
+  "translation": "10",
+  "ipa": "/tseːn/",
+  "example": "Zehn, bitte.",
+  "exampleEn": "10, please.",
+  "tags": [
+   "number"
+  ]
+ }
+]

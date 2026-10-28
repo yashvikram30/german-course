@@ -1,0 +1,79 @@
+{
+  "id": "u01-l03",
+  "unitId": "u01",
+  "order": 3,
+  "type": "new",
+  "title": "Bitte buchstabieren Sie",
+  "situation": {
+    "setting": "At the course office, Raj has to give his name and phone number for the registration form.",
+    "lines": [
+      { "speaker": "Frau Weber", "de": "Wie heißen Sie?", "en": "What is your name?" },
+      { "speaker": "Raj", "de": "Ich heiße Patel.", "en": "My name is Patel." },
+      { "speaker": "Frau Weber", "de": "Entschuldigung, bitte buchstabieren Sie.", "en": "Excuse me, please spell it." },
+      { "speaker": "Raj", "de": "P – A – T – E – L.", "en": "P – A – T – E – L." },
+      { "speaker": "Frau Weber", "de": "Danke. Und die Telefonnummer?", "en": "Thank you. And the phone number?" },
+      { "speaker": "Raj", "de": "Null, eins, sieben, sechs, vier, fünf, acht, neun, zwei, drei.", "en": "Zero, one, seven, six, four, five, eight, nine, two, three." },
+      { "speaker": "Frau Weber", "de": "Danke! Auf Wiedersehen, Herr Patel.", "en": "Thank you! Goodbye, Mr Patel." },
+      { "speaker": "Raj", "de": "Bitte. Auf Wiedersehen!", "en": "You're welcome. Goodbye!" }
+    ]
+  },
+  "vocabIds": ["buchstabe", "buchstabieren", "zahl", "telefonnummer", "bitte", "danke", "entschuldigung", "num-null", "num-eins", "num-zwei", "num-drei", "num-vier", "num-fuenf", "num-sechs", "num-sieben", "num-acht", "num-neun", "num-zehn"],
+  "grammar": {
+    "title": "Numbers 0–10 and the alphabet",
+    "intro": "You need two things to give personal details: the numbers and the letter names. Learn the letter names by ear: in German you spell names aloud all the time, on the phone and at the desk.",
+    "tables": [
+      {
+        "caption": "Numbers",
+        "head": ["Number", "German", "Number", "German"],
+        "rows": [
+          ["0", "null", "6", "sechs"],
+          ["1", "eins", "7", "sieben"],
+          ["2", "zwei", "8", "acht"],
+          ["3", "drei", "9", "neun"],
+          ["4", "vier", "10", "zehn"],
+          ["5", "fünf", "", ""]
+        ]
+      },
+      {
+        "caption": "Letter names (approximate English sounds)",
+        "head": ["Letters", "Say it like"],
+        "rows": [
+          ["A B C D E", "ah · beh · tseh · deh · eh"],
+          ["F G H I J", "eff · geh · hah · ee · yot"],
+          ["K L M N O", "kah · ell · emm · enn · oh"],
+          ["P Q R S T", "peh · koo · err · ess · teh"],
+          ["U V W X Y Z", "oo · fow · veh · iks · üpsilon · tset"],
+          ["Ä Ö Ü ß", "ah-Umlaut · oh-Umlaut · ue-Umlaut · ess-tset"]
+        ]
+      }
+    ],
+    "examples": [
+      { "de": "Ich heiße Patel: P – A – T – E – L.", "en": "My name is Patel: P – A – T – E – L." },
+      { "de": "Bitte buchstabieren Sie.", "en": "Please spell it. (formal)" },
+      { "de": "Null, eins, sieben, sechs.", "en": "Zero, one, seven, six." },
+      { "de": "Danke! – Bitte!", "en": "Thank you! – You're welcome!" }
+    ],
+    "watchOut": [
+      "ei sounds like English “eye” (zwei, drei) and eu sounds like “oy” (neun). ie is a long “ee” (sieben, vier).",
+      "On the phone zwei is often said zwo, so it isn't confused with drei.",
+      "bitte means both “please” and “you're welcome”. Use it when you ask for something and when someone thanks you."
+    ]
+  },
+  "exercises": [
+    { "type": "listen", "text": "Fünf, acht, zwei", "options": ["5 8 2", "5 8 3", "6 8 2", "5 9 2"], "answer": "5 8 2", "explain": "fünf = 5, acht = 8, zwei = 2." },
+    { "type": "mcq", "prompt": "Which number is “sieben”?", "options": ["6", "7", "8", "9"], "answer": "7", "explain": "sechs = 6, sieben = 7." },
+    { "type": "mcq", "prompt": "You didn't catch someone's name. What do you say?", "options": ["Entschuldigung?", "Tschüss", "Danke", "Auf Wiedersehen"], "answer": "Entschuldigung?", "explain": "Entschuldigung is “excuse me”, handy for getting someone's attention or asking them to repeat." },
+    { "type": "gap", "prompt": "Drei plus vier ist ___.", "answer": ["sieben"], "hint": "3 + 4", "explain": "drei + vier = sieben." },
+    { "type": "gap", "prompt": "Eins, zwei, ___, vier.", "answer": ["drei"], "hint": "the number after zwei", "explain": "eins, zwei, drei, vier." },
+    { "type": "gap", "prompt": "Acht minus zwei ist ___.", "answer": ["sechs"], "hint": "8 − 2", "explain": "acht − zwei = sechs." },
+    { "type": "order", "prompt": "Please spell it. (formal)", "answer": ["Bitte", "buchstabieren", "Sie"], "explain": "A polite request to Sie puts the verb before Sie." },
+    { "type": "mcq", "prompt": "Someone says “Danke!” to you. How do you reply?", "options": ["Bitte!", "Danke!", "Hallo!", "Ja"], "answer": "Bitte!", "explain": "Bitte also means “you're welcome”." },
+    { "type": "match", "prompt": "Match the number words.", "pairs": [["null", "0"], ["fünf", "5"], ["neun", "9"], ["zehn", "10"]] }
+  ],
+  "culture": "Germans often ask you to spell your name, so practise it. Phone numbers are usually said in pairs or in short groups of digits, and Germans write the date as day.month.year. Say Entschuldigung to get attention politely, for example in a shop or on the bus.",
+  "canDo": [
+    "I can count from 0 to 10.",
+    "I can spell my name aloud.",
+    "I can say bitte, danke and Entschuldigung at the right moment."
+  ]
+}

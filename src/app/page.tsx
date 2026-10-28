@@ -1,69 +1,120 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getContents, getLastOpened } from "@/lib/data";
 
-export default function Home() {
+export default function Contents() {
+  const contents = getContents();
+  const last = getLastOpened();
+  const resume = contents.find((c) => c.id === last) ?? contents[0];
+  const levels = [...new Set(contents.map((c) => c.level))];
+  const totalWords = contents.reduce((n, c) => n + c.words, 0);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="mx-auto max-w-3xl">
+      {/* The cover of a Schulheft, with its label sticker */}
+      <section className="rounded-sm bg-cover px-5 py-10 sm:px-12 sm:py-14" aria-label="Cover">
+        <div className="-rotate-1 rounded-[3px] bg-sheet px-6 py-7 text-ink shadow-[0_18px_30px_-18px_rgba(0,0,0,0.6)] sm:px-9">
+          <h1 className="ui !m-0 text-[2.9rem] font-bold leading-[1.02] tracking-tight sm:text-[4.4rem]">
+            Deutsch
+            <span className="block font-normal text-muted">von Anfang an</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+          <dl className="ui mt-7 grid grid-cols-[4.5rem_1fr] gap-y-3 text-lg">
+            {[
+              ["Fach", "Deutsch, Grammatik und Lesebuch"],
+              ["Stufe", `A1, ${contents.filter((c) => c.level === "A1").length} Kapitel`],
+              ["Name", ""],
+            ].map(([k, v]) => (
+              <div key={k} className="contents">
+                <dt className="text-muted">{k}</dt>
+                <dd className="hand m-0 border-b border-rule text-[1.7rem] leading-none text-blue">{v || " "}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <div className="mt-9 max-w-[36rem]">
+        <p className="!mt-0 text-xl leading-relaxed">
+          A beginner&rsquo;s German course written like a textbook. Each chapter explains why the language works the way it does, shows real sentences you can hear, and gives you worksheets that mark themselves.
+        </p>
+        <div className="ui mt-6 flex flex-wrap gap-3">
+          <Link href={`/kapitel/${resume.id}`} className="btn btn-solid">
+            {last ? "Continue" : "Start"} with chapter {resume.order}, {resume.title}
+          </Link>
+          <Link href="/glossar" className="btn">Glossary, {totalWords} words</Link>
+          <Link href="/pruefung" className="btn">Exam practice (Goethe A1)</Link>
         </div>
-      </main>
+      </div>
+
+      <section className="mt-14 max-w-[36rem]" aria-labelledby="how">
+        <h2 id="how" className="ui !mb-2 text-2xl font-bold">How to use it</h2>
+        <ol className="list-decimal space-y-2 pl-6 marker:font-bold marker:text-blue">
+          <li><strong>Read aloud.</strong> Every German sentence has a play button. Pick a male or a female voice under <em>Text and voice</em>.</li>
+          <li><strong>Notice the margin notes.</strong> <em>Merke</em> is what to remember, <em>Achtung</em> a common mistake, <em>Tipp</em> a shortcut, <em>Landeskunde</em> the culture behind a phrase.</li>
+          <li><strong>Fill in the worksheets.</strong> Your answers are marked in red pencil, and every mistake is explained.</li>
+          <li><strong>Review the words.</strong> Marking a chapter as read adds its vocabulary to your flashcards.</li>
+        </ol>
+      </section>
+
+      <section className="mt-14" aria-labelledby="toc-h">
+        <h2 id="toc-h" className="ui !mb-0 text-2xl font-bold">Contents</h2>
+        {levels.map((lv) => {
+          const inLevel = contents.filter((c) => c.level === lv);
+          const parts = [...new Set(inLevel.map((c) => c.part))];
+          return (
+            <div key={lv} className="mt-8">
+              <div className="flex items-baseline gap-3 border-b-2 border-blue pb-1">
+                <span className="ui text-4xl font-bold text-blue">{lv}</span>
+                <span className="ui text-lg text-muted">
+                  {lv === "A1" ? "Beginner: survive and introduce yourself" : "Elementary"}
+                  {", "}
+                  {inLevel.length} chapters, {inLevel.reduce((n, c) => n + c.words, 0)} words
+                </span>
+              </div>
+              {parts.map((p) => (
+                <div key={p} className="mt-5">
+                  <h3 className="ui !m-0 text-lg font-semibold text-muted">{p}</h3>
+                  <ol className="mt-1 divide-y divide-rule border-y border-rule">
+                    {inLevel.filter((c) => c.part === p).map((c) => (
+                      <li key={c.id}>
+                        <Link href={`/kapitel/${c.id}`} className="group grid grid-cols-[3.2rem_1fr_auto] items-baseline gap-x-3 py-4 hover:bg-paper-2">
+                          <span className="ui text-right text-[2.6rem] font-bold leading-none text-blue">{c.order}</span>
+                          <span>
+                            <span className="block text-xl font-semibold leading-snug group-hover:underline group-hover:decoration-marker group-hover:decoration-[6px] group-hover:underline-offset-[-2px]">{c.title}</span>
+                            <span className="block italic text-muted">{c.subtitle}</span>
+                            <span className="ui mt-1 block text-base text-muted">
+                              {c.words > 0 ? `${c.words} words, ` : ""}
+                              {c.exercises} worksheets
+                              {c.exercisesDone > 0 ? `, ${c.exercisesDone} tried` : ""}
+                            </span>
+                          </span>
+                          {c.readAt && <span className="hand text-2xl leading-none text-red" title="Read">gelesen</span>}
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+
+        <div className="mt-8">
+          <div className="flex items-baseline gap-3 border-b-2 border-rule pb-1">
+            <span className="ui text-4xl font-bold text-muted">A2</span>
+            <span className="ui text-lg text-muted">Planned, not written yet</span>
+          </div>
+          <ul className="mt-3 !list-none !pl-0 text-muted">
+            <li className="!pl-0">Subordinate clauses with weil, dass, wenn, obwohl</li>
+            <li className="!pl-0">Adjective endings and comparison</li>
+            <li className="!pl-0">Reflexive verbs, the genitive and relative clauses</li>
+            <li className="!pl-0">Future with werden, connected writing, opinions</li>
+          </ul>
+        </div>
+      </section>
+
+      <p className="mt-12 max-w-[36rem] text-muted">
+        The A1 scope follows the Goethe-Institut word list and exam objectives. <Link href="/quellen" className="text-blue underline">See the sources</Link>.
+      </p>
     </div>
   );
 }

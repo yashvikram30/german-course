@@ -1,0 +1,242 @@
+{
+  "id": "u01-l01",
+  "unitId": "u01",
+  "order": 1,
+  "type": "new",
+  "title": "Hallo! Wie heißt du?",
+  "situation": {
+    "setting": "Anna and Raj meet for the first time at a language course in Berlin.",
+    "lines": [
+      {
+        "speaker": "Anna",
+        "de": "Hallo! Ich heiße Anna. Und du?",
+        "en": "Hi! My name is Anna. And you?"
+      },
+      {
+        "speaker": "Raj",
+        "de": "Hallo, Anna. Ich heiße Raj.",
+        "en": "Hi, Anna. My name is Raj."
+      },
+      {
+        "speaker": "Anna",
+        "de": "Woher kommst du, Raj?",
+        "en": "Where are you from, Raj?"
+      },
+      {
+        "speaker": "Raj",
+        "de": "Ich komme aus Indien. Und du?",
+        "en": "I come from India. And you?"
+      },
+      {
+        "speaker": "Anna",
+        "de": "Ich komme aus Deutschland.",
+        "en": "I come from Germany."
+      },
+      {
+        "speaker": "Raj",
+        "de": "Tschüss, Anna!",
+        "en": "Bye, Anna!"
+      },
+      {
+        "speaker": "Anna",
+        "de": "Tschüss, Raj!",
+        "en": "Bye, Raj!"
+      }
+    ]
+  },
+  "vocabIds": [
+    "hallo",
+    "guten-tag",
+    "tschuess",
+    "auf-wiedersehen",
+    "ich",
+    "du",
+    "sie-formal",
+    "heissen",
+    "kommen",
+    "wohnen",
+    "name",
+    "land",
+    "deutschland",
+    "indien",
+    "wie",
+    "woher",
+    "aus",
+    "und"
+  ],
+  "grammar": {
+    "title": "Regular verbs: ich, du, Sie",
+    "intro": "German verbs have an infinitive ending in -en (heißen, kommen, wohnen). To use a verb you remove -en to get the stem, then add an ending that matches the subject. In a statement the verb always sits in the second position of the sentence.",
+    "examples": [
+      {
+        "de": "Ich heiße Anna.",
+        "en": "My name is Anna."
+      },
+      {
+        "de": "Woher kommst du?",
+        "en": "Where are you from? (informal)"
+      },
+      {
+        "de": "Woher kommen Sie?",
+        "en": "Where are you from? (formal)"
+      },
+      {
+        "de": "Ich komme aus Deutschland.",
+        "en": "I come from Germany."
+      }
+    ],
+    "watchOut": [
+      "Sie (formal you) is always written with a capital S, and the verb takes the -en ending, like the infinitive.",
+      "heißen has du heißt, not heißst: the stem already ends in an s-sound, so the -st shortens to -t.",
+      "In W-questions the question word is first and the verb is still second: Woher kommst du?"
+    ],
+    "tables": [
+      {
+        "head": [
+          "",
+          "heißen",
+          "kommen",
+          "wohnen",
+          "ending"
+        ],
+        "rows": [
+          [
+            "ich",
+            "heiße",
+            "komme",
+            "wohne",
+            "-e"
+          ],
+          [
+            "du",
+            "heißt",
+            "kommst",
+            "wohnst",
+            "-st"
+          ],
+          [
+            "Sie",
+            "heißen",
+            "kommen",
+            "wohnen",
+            "-en"
+          ]
+        ]
+      }
+    ]
+  },
+  "exercises": [
+    {
+      "type": "mcq",
+      "prompt": "You meet a stranger in the afternoon and want to greet them politely. What do you say?",
+      "options": [
+        "Guten Tag",
+        "Tschüss",
+        "Hallo",
+        "Und du"
+      ],
+      "answer": "Guten Tag",
+      "explain": "Guten Tag is the polite, all-purpose daytime greeting. Hallo is friendlier and informal."
+    },
+    {
+      "type": "listen",
+      "text": "Ich komme aus Indien.",
+      "options": [
+        "I live in India.",
+        "I come from India.",
+        "My name is India.",
+        "Where is India?"
+      ],
+      "answer": "I come from India.",
+      "explain": "kommen aus + country means 'to come from'."
+    },
+    {
+      "type": "gap",
+      "prompt": "Ich ___ Anna.",
+      "answer": [
+        "heiße"
+      ],
+      "hint": "heißen with ich",
+      "explain": "ich takes the ending -e: ich heiße."
+    },
+    {
+      "type": "gap",
+      "prompt": "Woher ___ du?",
+      "answer": [
+        "kommst"
+      ],
+      "hint": "kommen with du",
+      "explain": "du takes the ending -st: du kommst."
+    },
+    {
+      "type": "gap",
+      "prompt": "Wie heißen ___?",
+      "answer": [
+        "Sie"
+      ],
+      "hint": "formal 'you'",
+      "explain": "The formal question is Wie heißen Sie? The verb ending -en matches Sie."
+    },
+    {
+      "type": "mcq",
+      "prompt": "You meet your new boss for the first time. Which pronoun do you use?",
+      "options": [
+        "du",
+        "ich",
+        "Sie",
+        "wie"
+      ],
+      "answer": "Sie",
+      "explain": "Use Sie with strangers, older people and in business settings until they offer du."
+    },
+    {
+      "type": "order",
+      "prompt": "I come from Germany.",
+      "answer": [
+        "Ich",
+        "komme",
+        "aus",
+        "Deutschland"
+      ],
+      "explain": "Subject first, verb second."
+    },
+    {
+      "type": "order",
+      "prompt": "What is your name? (informal)",
+      "answer": [
+        "Wie",
+        "heißt",
+        "du"
+      ],
+      "explain": "The question word comes first, the verb is second."
+    },
+    {
+      "type": "match",
+      "prompt": "Match the German with the English.",
+      "pairs": [
+        [
+          "Hallo",
+          "hello, hi"
+        ],
+        [
+          "Tschüss",
+          "bye"
+        ],
+        [
+          "Auf Wiedersehen",
+          "goodbye (formal)"
+        ],
+        [
+          "woher",
+          "from where"
+        ]
+      ]
+    }
+  ],
+  "culture": "German has two words for 'you'. Use Sie with strangers, older people, officials and at work; use du with friends, family, children and, increasingly, among young people. If in doubt, start with Sie. Germans usually say Guten Tag until the evening, and Tschüss is a friendly, everyday way to say goodbye.",
+  "canDo": [
+    "I can greet someone formally and informally.",
+    "I can say my name and ask someone theirs.",
+    "I can say where I come from and ask where someone else is from."
+  ]
+}

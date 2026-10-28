@@ -1,0 +1,64 @@
+{
+  "id": "u01-l02",
+  "unitId": "u01",
+  "order": 2,
+  "type": "new",
+  "title": "Ich bin… Du bist… Sie sind…",
+  "situation": {
+    "setting": "Raj arrives at the course office. The teacher, Frau Weber, welcomes him formally.",
+    "lines": [
+      { "speaker": "Frau Weber", "de": "Guten Tag! Sind Sie Herr Patel?", "en": "Good day! Are you Mr Patel?" },
+      { "speaker": "Raj", "de": "Ja, ich bin Raj Patel.", "en": "Yes, I am Raj Patel." },
+      { "speaker": "Frau Weber", "de": "Woher kommen Sie, Herr Patel?", "en": "Where do you come from, Mr Patel?" },
+      { "speaker": "Raj", "de": "Ich komme aus Indien.", "en": "I come from India." },
+      { "speaker": "Frau Weber", "de": "Sprechen Sie Deutsch?", "en": "Do you speak German?" },
+      { "speaker": "Raj", "de": "Ja, ein bisschen. Ich spreche Hindi und Englisch.", "en": "Yes, a little. I speak Hindi and English." },
+      { "speaker": "Frau Weber", "de": "Anna kommt aus Deutschland. Sie spricht Deutsch.", "en": "Anna comes from Germany. She speaks German." }
+    ]
+  },
+  "vocabIds": ["sein", "er", "sie-she", "wir", "frau", "herr", "sprache", "sprechen", "deutsch", "englisch", "hindi", "ja", "nein", "ein-bisschen"],
+  "grammar": {
+    "title": "The verb sein (to be)",
+    "intro": "Sein is the most important verb in German, and it is irregular: you have to learn its forms by heart. Questions that can be answered with yes or no put the verb first.",
+    "tables": [
+      {
+        "head": ["", "sein", "example"],
+        "rows": [
+          ["ich", "bin", "Ich bin Raj."],
+          ["du", "bist", "Bist du Anna?"],
+          ["er / sie", "ist", "Er ist aus Indien."],
+          ["wir", "sind", "Wir sind aus Deutschland."],
+          ["Sie", "sind", "Sind Sie Herr Patel?"]
+        ]
+      }
+    ],
+    "examples": [
+      { "de": "Ich bin Raj.", "en": "I am Raj." },
+      { "de": "Sind Sie Herr Patel?", "en": "Are you Mr Patel? (formal)" },
+      { "de": "Ja, ich bin Raj Patel.", "en": "Yes, I am Raj Patel." },
+      { "de": "Sie spricht Deutsch.", "en": "She speaks German." }
+    ],
+    "watchOut": [
+      "In a yes/no question the verb comes first: Bist du Anna? Sind Sie Herr Patel?",
+      "sie (she) and Sie (formal you) look the same at the start of a sentence. Check the verb: Sie ist = she is, Sie sind = you are.",
+      "sprechen changes its vowel with du and er/sie: ich spreche, du sprichst, er/sie spricht."
+    ]
+  },
+  "exercises": [
+    { "type": "gap", "prompt": "Ich ___ Raj.", "answer": ["bin"], "hint": "sein with ich", "explain": "ich bin." },
+    { "type": "gap", "prompt": "Du ___ aus Deutschland.", "answer": ["bist"], "hint": "sein with du", "explain": "du bist." },
+    { "type": "gap", "prompt": "Anna ___ aus Deutschland.", "answer": ["ist"], "hint": "sein with er/sie", "explain": "Anna = sie, so: ist." },
+    { "type": "gap", "prompt": "___ Sie Herr Patel?", "answer": ["Sind"], "hint": "a question starts with the verb", "explain": "Yes/no questions start with the verb: Sind Sie…?" },
+    { "type": "mcq", "prompt": "Which sentence is correct?", "options": ["Er ist aus Indien.", "Er bist aus Indien.", "Er sind aus Indien.", "Er bin aus Indien."], "answer": "Er ist aus Indien.", "explain": "er goes with ist." },
+    { "type": "order", "prompt": "Do you speak German? (formal)", "answer": ["Sprechen", "Sie", "Deutsch"], "explain": "A yes/no question starts with the verb." },
+    { "type": "order", "prompt": "She speaks German.", "answer": ["Sie", "spricht", "Deutsch"], "explain": "sprechen → er/sie spricht." },
+    { "type": "listen", "text": "Wir sind aus Deutschland.", "options": ["We are from Germany.", "They live in Germany.", "I am from Germany.", "Are you from Germany?"], "answer": "We are from Germany.", "explain": "wir = we, sind = are." },
+    { "type": "match", "prompt": "Match the German with the English.", "pairs": [["Sprache", "language"], ["Englisch", "English"], ["Herr", "Mr, man"], ["Frau", "Mrs, woman"]] }
+  ],
+  "culture": "Address people with Herr or Frau plus their surname: Frau Weber, Herr Patel. Frau is used for every adult woman, married or not. Fräulein is considered outdated. Titles such as Doktor are often added: Herr Doktor Weber.",
+  "canDo": [
+    "I can say who I am and ask someone else with the verb sein.",
+    "I can say which languages I speak.",
+    "I can ask a yes/no question."
+  ]
+}
