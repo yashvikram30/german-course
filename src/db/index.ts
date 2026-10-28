@@ -1,13 +1,15 @@
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
+import fs from "node:fs";
 import path from "node:path";
 import * as schema from "./schema";
 
 const globalForDb = globalThis as unknown as { sqlite?: Database.Database };
 
-const sqlite =
-  globalForDb.sqlite ??
-  new Database(process.env.GERMAN_DB ?? path.join(process.cwd(), "data", "german.db"));
+const dbFile = process.env.GERMAN_DB ?? path.join(process.cwd(), "data", "german.db");
+fs.mkdirSync(path.dirname(dbFile), { recursive: true }); // fresh clones and build servers have no data/ folder
+
+const sqlite = globalForDb.sqlite ?? new Database(dbFile);
 sqlite.pragma("journal_mode = WAL");
 if (process.env.NODE_ENV !== "production") globalForDb.sqlite = sqlite;
 
