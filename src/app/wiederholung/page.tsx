@@ -31,7 +31,7 @@ export default async function ReviewPage(props: PageProps<"/wiederholung">) {
   const scope = typeof sp.scope === "string" ? sp.scope : "due";
 
   if (mode && MODES.some((m) => m.id === mode)) {
-    const words = getStudyQueue(scope, mode);
+    const words = await getStudyQueue(scope, mode);
     const label = MODES.find((m) => m.id === mode)!.label;
     return (
       <div className="mx-auto max-w-2xl">
@@ -55,7 +55,7 @@ export default async function ReviewPage(props: PageProps<"/wiederholung">) {
     );
   }
 
-  const o = getReviewOverview();
+  const o = await getReviewOverview();
   const readChapters = o.chapters.filter((c) => c.read);
   const levels = [...new Set(o.chapters.map((c) => c.level))];
 

@@ -2,9 +2,9 @@ import Link from "next/link";
 import { getExamSummaries, MODULES } from "@/lib/exam";
 import { getAllAttempts } from "@/lib/examData";
 
-export default function ExamHome() {
+export default async function ExamHome() {
   const tests = getExamSummaries();
-  const attempts = getAllAttempts();
+  const attempts = await getAllAttempts();
   const grade = (p: number) => (p >= 90 ? "sehr gut" : p >= 80 ? "gut" : p >= 70 ? "befriedigend" : p >= 60 ? "ausreichend" : "nicht bestanden");
 
   return (

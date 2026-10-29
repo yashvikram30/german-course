@@ -5,10 +5,10 @@ import { addAnnotation, deleteAnnotation, setAnnotationNote } from "@/lib/action
 import { buildIndex, describe, resolve, type Anchor } from "@/lib/anchor";
 
 interface Saved extends Anchor {
-  id: number;
+  id: string;
   note: string;
 }
-type Ann = Anchor & { key: string; id?: number; note: string };
+type Ann = Anchor & { key: string; id?: string; note: string };
 
 // Maps a node inside `root` to the node at the same place in a deep clone of it.
 const pathOf = (node: Node, root: Node) => {
@@ -37,7 +37,7 @@ export function Annotator({ chapterId, initial, children }: { chapterId: string;
   const area = useRef<HTMLTextAreaElement>(null);
   const ranges = useRef(new Map<string, Range>());
   const clones = useRef<{ from: HTMLElement; to: HTMLElement }[]>([]); // the turning leaf is made of copies of sections
-  const saving = useRef(new Map<string, Promise<number>>());
+  const saving = useRef(new Map<string, Promise<string>>());
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const counter = useRef(0);
 

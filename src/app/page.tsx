@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getContents, getLastOpened } from "@/lib/data";
 
-export default function Contents() {
-  const contents = getContents();
-  const last = getLastOpened();
+export default async function Contents() {
+  const contents = await getContents();
+  const last = await getLastOpened();
   const resume = contents.find((c) => c.id === last) ?? contents[0];
   const levels = [...new Set(contents.map((c) => c.level))];
   const totalWords = contents.reduce((n, c) => n + c.words, 0);

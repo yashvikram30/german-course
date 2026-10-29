@@ -5,17 +5,18 @@ import { ChapterBody, outlineOf, splitSections } from "@/components/book/Chapter
 import { PageReader } from "@/components/book/PageReader";
 import { ChapterTracker } from "@/components/book/ChapterActions";
 import { Annotator } from "@/components/book/Annotator";
-import { getAnnotations, getChapter, getContents } from "@/lib/data";
+import { getAnnotations, getChapter, getContents, getVocabBoxes } from "@/lib/data";
 
 export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
   const { id } = await props.params;
-  const data = getChapter(id);
+  const data = await getChapter(id);
   if (!data) notFound();
   const { chapter, prev, next, exercises, read } = data;
   const outline = outlineOf(chapter.body);
   const sections = splitSections(chapter.body);
   const titles = [chapter.title, ...sections.map((s) => s.title), "End of chapter"];
-  const words = getContents().find((c) => c.id === id)?.words ?? 0;
+  const words = (await getContents()).find((c) => c.id === id)?.words ?? 0;
+  const [annotations, boxes] = await Promise.all([getAnnotations(id), getVocabBoxes()]);
 
   return (
     <div className="reader-wrap mx-auto flex max-w-5xl justify-center gap-12">
@@ -41,9 +42,10 @@ export default async function ChapterPage(props: PageProps<"/kapitel/[id]">) {
         </header>
         </div>
 
-        <Annotator chapterId={id} initial={getAnnotations(id)}>
+        <Annotator chapterId={id} initial={annotations}>
           <ChapterBody
             chapterId={id}
+            boxes={boxes}
             body={chapter.body}
             exercises={new Map([...exercises].map(([k, v]) => [k, { best: v.best, total: v.total }]))}
           />

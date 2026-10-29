@@ -1,12 +1,18 @@
-import { and, asc, desc, eq, gt, lte } from "drizzle-orm";
-import { annotations, chapterProgress, chapters, db, exerciseProgress, vocab, vocabProgress } from "@/db";
+import { asc, eq } from "drizzle-orm";
+import { ObjectId } from "mongodb";
+import { chapters, db, vocab } from "@/db";
+import { mongo } from "@/db/mongo";
 import { parseExercise } from "@/lib/blocks";
 
 const countBlocks = (body: string, lang: string) => (body.match(new RegExp("```" + lang + "\\n", "g")) ?? []).length;
 
-export function getContents() {
-  const read = new Map(db.select().from(chapterProgress).all().map((p) => [p.chapterId, p]));
-  const done = db.select().from(exerciseProgress).all();
+const readMap = async () => new Map((await (await mongo()).chapterProgress.find().toArray()).map((p) => [p._id, p.readAt]));
+const vocabProgressMap = async () => new Map((await (await mongo()).vocabProgress.find().toArray()).map((p) => [p._id, p]));
+const exerciseMap = async () => new Map((await (await mongo()).exerciseProgress.find().toArray()).map((e) => [e._id, e]));
+
+export async function getContents() {
+  const read = await readMap();
+  const done = [...(await exerciseMap()).values()];
   const words = db.select().from(vocab).all();
   return db
     .select()
@@ -21,35 +27,40 @@ export function getContents() {
       title: c.title,
       subtitle: c.subtitle,
       goals: c.goals,
-      readAt: read.get(c.id)?.readAt ?? null,
+      readAt: read.get(c.id) ?? null,
       exercises: countBlocks(c.body, "exercise"),
       exercisesDone: done.filter((d) => d.chapterId === c.id).length,
       words: words.filter((w) => w.chapterId === c.id).length,
     }));
 }
 
-export type ContentsEntry = ReturnType<typeof getContents>[number];
+export type ContentsEntry = Awaited<ReturnType<typeof getContents>>[number];
 
-export function getChapter(id: string) {
+export async function getChapter(id: string) {
   const c = db.select().from(chapters).where(eq(chapters.id, id)).get();
   if (!c) return null;
+  const m = await mongo();
   const all = db.select({ id: chapters.id, title: chapters.title, order: chapters.order }).from(chapters).orderBy(asc(chapters.order)).all();
   const i = all.findIndex((x) => x.id === id);
   return {
     chapter: c,
     prev: all[i - 1] ?? null,
     next: all[i + 1] ?? null,
-    exercises: new Map(db.select().from(exerciseProgress).where(eq(exerciseProgress.chapterId, id)).all().map((e) => [e.exerciseId, e])),
-    read: db.select().from(chapterProgress).where(eq(chapterProgress.chapterId, id)).get()?.readAt ?? null,
+    exercises: new Map((await m.exerciseProgress.find({ chapterId: id }).toArray()).map((e) => [e._id, e])),
+    read: (await m.chapterProgress.findOne({ _id: id }))?.readAt ?? null,
   };
 }
 
-export function getLastOpened() {
-  return db.select().from(chapterProgress).orderBy(desc(chapterProgress.lastOpened)).get()?.chapterId ?? null;
+export async function getLastOpened() {
+  return (await (await mongo()).chapterProgress.find().sort({ lastOpened: -1 }).limit(1).next())?._id ?? null;
 }
 
-export function getVocabByIds(ids: string[]) {
-  const boxes = new Map(db.select().from(vocabProgress).all().map((p) => [p.vocabId, p.box]));
+/** Review box of every word that has progress. Pass it to `getVocabByIds` (which runs inside the sync Markdown renderer). */
+export async function getVocabBoxes() {
+  return new Map([...(await vocabProgressMap())].map(([id, p]) => [id, p.box]));
+}
+
+export function getVocabByIds(ids: string[], boxes: Map<string, number>) {
   const rows = new Map(db.select().from(vocab).all().map((v) => [v.id, v]));
   return ids.flatMap((id) => {
     const v = rows.get(id);
@@ -57,31 +68,32 @@ export function getVocabByIds(ids: string[]) {
   });
 }
 
-export function getWordBank() {
+export async function getWordBank() {
+  const prog = await vocabProgressMap();
   return db
-    .select({ w: vocab, p: vocabProgress })
+    .select()
     .from(vocab)
-    .leftJoin(vocabProgress, eq(vocab.id, vocabProgress.vocabId))
     .orderBy(asc(vocab.chapterId), asc(vocab.group))
     .all()
-    .map(({ w, p }) => ({ ...w, box: p?.box ?? 0, correct: p?.correct ?? 0, wrong: p?.wrong ?? 0 }));
+    .map((w) => {
+      const p = prog.get(w.id);
+      return { ...w, box: p?.box ?? 0, correct: p?.correct ?? 0, wrong: p?.wrong ?? 0 };
+    });
 }
 
-export type BankWord = ReturnType<typeof getWordBank>[number];
+export type BankWord = Awaited<ReturnType<typeof getWordBank>>[number];
 
-export function getDueWords() {
-  return db
-    .select({ w: vocab, p: vocabProgress })
-    .from(vocabProgress)
-    .innerJoin(vocab, eq(vocab.id, vocabProgress.vocabId))
-    .where(and(gt(vocabProgress.box, 0), lte(vocabProgress.due, Date.now())))
-    .orderBy(asc(vocabProgress.due))
-    .all()
-    .map(({ w, p }) => ({ ...w, box: p.box }));
+export async function getDueWords() {
+  const due = await (await mongo()).vocabProgress.find({ box: { $gt: 0 }, due: { $lte: Date.now() } }).sort({ due: 1 }).toArray();
+  const rows = new Map(db.select().from(vocab).all().map((v) => [v.id, v]));
+  return due.flatMap((p) => {
+    const w = rows.get(p._id);
+    return w ? [{ ...w, box: p.box }] : [];
+  });
 }
 
-export function getDueCount() {
-  return getDueWords().length;
+export async function getDueCount() {
+  return (await getDueWords()).length;
 }
 
 // ---------------- revision ----------------
@@ -94,12 +106,12 @@ function exercisesOf(chapterId: string, body: string) {
   });
 }
 
-export function getReviewOverview() {
+export async function getReviewOverview() {
   const now = Date.now();
-  const read = new Map(db.select().from(chapterProgress).all().map((p) => [p.chapterId, p.readAt]));
-  const prog = new Map(db.select().from(vocabProgress).all().map((p) => [p.vocabId, p]));
+  const read = await readMap();
+  const prog = await vocabProgressMap();
   const words = db.select().from(vocab).all();
-  const done = new Map(db.select().from(exerciseProgress).all().map((e) => [e.exerciseId, e]));
+  const done = await exerciseMap();
 
   const chaptersOut = db
     .select()
@@ -162,12 +174,10 @@ function seeded(seed: string) {
 }
 
 /** The words for a study session. Only chapters you marked as read take part. */
-export function getStudyQueue(scope: string, mode: string, limit = 20) {
+export async function getStudyQueue(scope: string, mode: string, limit = 20) {
   const now = Date.now();
-  const readIds = new Set(
-    db.select().from(chapterProgress).all().filter((p) => p.readAt != null).map((p) => p.chapterId),
-  );
-  const prog = new Map(db.select().from(vocabProgress).all().map((p) => [p.vocabId, p]));
+  const readIds = new Set([...(await readMap())].filter(([, readAt]) => readAt != null).map(([id]) => id));
+  const prog = await vocabProgressMap();
   let pool = db.select().from(vocab).all().filter((w) => readIds.has(w.chapterId));
 
   if (/^k\d+$/.test(scope)) pool = pool.filter((w) => w.chapterId === scope);
@@ -196,11 +206,7 @@ export function getChapterTitle(id: string) {
   return c ? `${c.order}. ${c.title}` : id;
 }
 
-export function getAnnotations(chapterId: string) {
-  return db
-    .select({ id: annotations.id, start: annotations.start, end: annotations.end, quote: annotations.quote, prefix: annotations.prefix, suffix: annotations.suffix, note: annotations.note })
-    .from(annotations)
-    .where(eq(annotations.chapterId, chapterId))
-    .orderBy(asc(annotations.start))
-    .all();
+export async function getAnnotations(chapterId: string) {
+  const rows = await (await mongo()).annotations.find({ chapterId }).sort({ start: 1 }).toArray();
+  return rows.map((a) => ({ id: String(a._id as ObjectId), start: a.start, end: a.end, quote: a.quote, prefix: a.prefix, suffix: a.suffix, note: a.note }));
 }

@@ -1,6 +1,7 @@
 import { getContents, getDueCount } from "@/lib/data";
 import { HeaderBar } from "./HeaderBar";
 
-export function Header() {
-  return <HeaderBar contents={getContents()} due={getDueCount()} />;
+export async function Header() {
+  const [contents, due] = await Promise.all([getContents(), getDueCount()]);
+  return <HeaderBar contents={contents} due={due} />;
 }

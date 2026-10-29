@@ -30,9 +30,11 @@ export function ChapterBody({
   chapterId,
   body,
   exercises,
+  boxes = new Map(),
 }: {
   chapterId: string;
   body: string;
+  boxes?: Map<string, number>;
   exercises: Map<string, { best: number; total: number }>;
 }) {
   const counter = { n: 0 };
@@ -54,7 +56,7 @@ export function ChapterBody({
       if (lang === "examples") return <Examples items={parseExamples(text)} />;
       if (lang === "vocab") {
         const { group, words } = parseVocab(text);
-        return <VocabTable title={group} words={getVocabByIds(words.map((w) => w.id))} />;
+        return <VocabTable title={group} words={getVocabByIds(words.map((w) => w.id), boxes)} />;
       }
       if (lang === "exercise") {
         const data = parseExercise(text, chapterId);
