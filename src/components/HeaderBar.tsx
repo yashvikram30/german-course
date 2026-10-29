@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { logOut } from "@/lib/auth-actions";
 import type { ContentsEntry } from "@/lib/data";
 import { SettingsPanel } from "./SettingsPanel";
 
-export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: number }) {
+export function HeaderBar({ contents, due, signedIn }: { contents: ContentsEntry[]; due: number; signedIn: boolean }) {
   const path = usePathname();
   // The drawer is open "for" one path, so navigating anywhere closes it without an effect.
   const [openFor, setOpenFor] = useState<string | null>(null);
@@ -35,13 +36,22 @@ export function HeaderBar({ contents, due }: { contents: ContentsEntry[]; due: n
             Deutsch <span className="font-normal text-muted">von Anfang an</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/glossar" className={`${nav} hidden sm:inline`}>Glossary</Link>
-            <Link href="/pruefung" className={nav}>Exam</Link>
-            <Link href="/wiederholung" className={nav}>
-              Review
-              {due > 0 && <span className="ml-1.5 rounded-full bg-red px-1.5 pb-0.5 text-sm text-paper">{due}</span>}
-            </Link>
+            {signedIn && (
+              <>
+                <Link href="/glossar" className={`${nav} hidden sm:inline`}>Glossary</Link>
+                <Link href="/pruefung" className={nav}>Exam</Link>
+                <Link href="/wiederholung" className={nav}>
+                  Review
+                  {due > 0 && <span className="ml-1.5 rounded-full bg-red px-1.5 pb-0.5 text-sm text-paper">{due}</span>}
+                </Link>
+              </>
+            )}
             <SettingsPanel />
+            {signedIn && (
+              <form action={logOut}>
+                <button type="submit" className={nav}>Log out</button>
+              </form>
+            )}
           </div>
         </div>
       </header>

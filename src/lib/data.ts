@@ -2,13 +2,27 @@ import { asc, eq } from "drizzle-orm";
 import { ObjectId } from "mongodb";
 import { chapters, db, vocab } from "@/db";
 import { mongo } from "@/db/mongo";
+import { getUserId } from "@/lib/auth";
 import { parseExercise } from "@/lib/blocks";
 
 const countBlocks = (body: string, lang: string) => (body.match(new RegExp("```" + lang + "\\n", "g")) ?? []).length;
 
-const readMap = async () => new Map((await (await mongo()).chapterProgress.find().toArray()).map((p) => [p._id, p.readAt]));
-const vocabProgressMap = async () => new Map((await (await mongo()).vocabProgress.find().toArray()).map((p) => [p._id, p]));
-const exerciseMap = async () => new Map((await (await mongo()).exerciseProgress.find().toArray()).map((e) => [e._id, e]));
+// Everything below shows the signed-in user's progress. A visitor who is not signed in sees the book with no progress.
+const NOBODY = "none";
+const me = async () => ({ m: await mongo(), userId: (await getUserId()) ?? NOBODY });
+
+const readMap = async () => {
+  const { m, userId } = await me();
+  return new Map((await m.chapterProgress.find({ userId }).toArray()).map((p) => [p.chapterId, p.readAt]));
+};
+const vocabProgressMap = async () => {
+  const { m, userId } = await me();
+  return new Map((await m.vocabProgress.find({ userId }).toArray()).map((p) => [p.vocabId, p]));
+};
+const exerciseMap = async () => {
+  const { m, userId } = await me();
+  return new Map((await m.exerciseProgress.find({ userId }).toArray()).map((e) => [e.exerciseId, e]));
+};
 
 export async function getContents() {
   const read = await readMap();
@@ -39,20 +53,21 @@ export type ContentsEntry = Awaited<ReturnType<typeof getContents>>[number];
 export async function getChapter(id: string) {
   const c = db.select().from(chapters).where(eq(chapters.id, id)).get();
   if (!c) return null;
-  const m = await mongo();
+  const { m, userId } = await me();
   const all = db.select({ id: chapters.id, title: chapters.title, order: chapters.order }).from(chapters).orderBy(asc(chapters.order)).all();
   const i = all.findIndex((x) => x.id === id);
   return {
     chapter: c,
     prev: all[i - 1] ?? null,
     next: all[i + 1] ?? null,
-    exercises: new Map((await m.exerciseProgress.find({ chapterId: id }).toArray()).map((e) => [e._id, e])),
-    read: (await m.chapterProgress.findOne({ _id: id }))?.readAt ?? null,
+    exercises: new Map((await m.exerciseProgress.find({ userId, chapterId: id }).toArray()).map((e) => [e.exerciseId, e])),
+    read: (await m.chapterProgress.findOne({ userId, chapterId: id }))?.readAt ?? null,
   };
 }
 
 export async function getLastOpened() {
-  return (await (await mongo()).chapterProgress.find().sort({ lastOpened: -1 }).limit(1).next())?._id ?? null;
+  const { m, userId } = await me();
+  return (await m.chapterProgress.find({ userId }).sort({ lastOpened: -1 }).limit(1).next())?.chapterId ?? null;
 }
 
 /** Review box of every word that has progress. Pass it to `getVocabByIds` (which runs inside the sync Markdown renderer). */
@@ -84,10 +99,11 @@ export async function getWordBank() {
 export type BankWord = Awaited<ReturnType<typeof getWordBank>>[number];
 
 export async function getDueWords() {
-  const due = await (await mongo()).vocabProgress.find({ box: { $gt: 0 }, due: { $lte: Date.now() } }).sort({ due: 1 }).toArray();
+  const { m, userId } = await me();
+  const due = await m.vocabProgress.find({ userId, box: { $gt: 0 }, due: { $lte: Date.now() } }).sort({ due: 1 }).toArray();
   const rows = new Map(db.select().from(vocab).all().map((v) => [v.id, v]));
   return due.flatMap((p) => {
-    const w = rows.get(p._id);
+    const w = rows.get(p.vocabId);
     return w ? [{ ...w, box: p.box }] : [];
   });
 }
@@ -207,6 +223,7 @@ export function getChapterTitle(id: string) {
 }
 
 export async function getAnnotations(chapterId: string) {
-  const rows = await (await mongo()).annotations.find({ chapterId }).sort({ start: 1 }).toArray();
+  const { m, userId } = await me();
+  const rows = await m.annotations.find({ userId, chapterId }).sort({ start: 1 }).toArray();
   return rows.map((a) => ({ id: String(a._id as ObjectId), start: a.start, end: a.end, quote: a.quote, prefix: a.prefix, suffix: a.suffix, note: a.note }));
 }

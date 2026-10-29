@@ -4,6 +4,7 @@ import "./globals.css";
 import { ChatWidget } from "@/components/ChatWidget";
 import { FocusMode } from "@/components/FocusMode";
 import { Header } from "@/components/Header";
+import { getUserId } from "@/lib/auth";
 
 // Everything reads the local database, so never prerender.
 export const dynamic = "force-dynamic";
@@ -19,13 +20,14 @@ export const metadata: Metadata = {
   description: "A German grammar and reading book for beginners",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const signedIn = (await getUserId()) !== null;
   return (
     <html lang="en" className={`${body.variable} ${ui.variable} ${hand.variable} ${mono.variable} ${ipa.variable} h-full antialiased`}>
       <body className="min-h-full">
         <Header />
         <main className="px-4 pb-24 pt-8 sm:px-6">{children}</main>
-        <ChatWidget />
+        {signedIn && <ChatWidget />}
         <FocusMode />
       </body>
     </html>

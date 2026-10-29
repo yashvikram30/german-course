@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { chapters, db } from "@/db";
+import { getUserId } from "@/lib/auth";
 
 // Server-side proxy to TokenHarbor (OpenAI-compatible). The key never reaches the browser.
 // Env: TOKEN_API_KEY (required). Optional: TOKENHARBOR_BASE_URL, TOKENHARBOR_MODEL (see https://tokenharbor.ai/v1/models).
@@ -16,6 +17,8 @@ const SYSTEM = `You are a friendly German tutor inside a beginner's German cours
 - Do not answer unrelated questions; steer back to learning German.`;
 
 export async function POST(req: Request) {
+  // The proxy only checks that a cookie exists; this checks that it is genuine, so the tutor key is not open to anyone.
+  if (!(await getUserId())) return Response.json({ error: "Sign in first." }, { status: 401 });
   const key = process.env.TOKEN_API_KEY;
   const base = process.env.TOKENHARBOR_BASE_URL ?? "https://tokenharbor.ai/v1";
   const model = process.env.TOKENHARBOR_MODEL ?? "deepseek-v4-flash:free";
